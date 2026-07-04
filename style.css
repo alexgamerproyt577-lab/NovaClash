@@ -237,3 +237,88 @@ width:100%;
 }
 
 }
+/* ===== NAVBAR ===== */
+
+.navbar{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:18px 40px;
+
+background:rgba(15,15,30,.65);
+
+backdrop-filter:blur(12px);
+
+border-bottom:1px solid rgba(140,90,255,.3);
+
+position:sticky;
+
+top:0;
+
+z-index:999;
+
+}
+
+.nav-logo{
+
+font-size:24px;
+
+font-weight:900;
+
+color:white;
+
+text-shadow:0 0 15px #7d3cff;
+
+}
+
+.nav-links{
+
+display:flex;
+
+gap:25px;
+
+}
+
+.nav-links a{
+
+color:#d8d8ff;
+
+text-decoration:none;
+
+font-size:16px;
+
+transition:.3s;
+
+}
+
+.nav-links a:hover{
+
+color:#b366ff;
+
+text-shadow:0 0 12px #7d3cff;
+
+}
+
+@media(max-width:700px){
+
+.navbar{
+
+flex-direction:column;
+
+gap:15px;
+
+}
+
+.nav-links{
+
+flex-wrap:wrap;
+
+justify-content:center;
+
+}
+
+}
