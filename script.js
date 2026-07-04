@@ -6,6 +6,8 @@ import {
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
 
+console.log("SCRIPT CARGADO");
+
 const firebaseConfig = {
   apiKey: "AIzaSyCULLdWfSlZL2vNetwknkaEOj5fAsIIr6o",
   authDomain: "nova-clash-8c78b.firebaseapp.com",
@@ -147,3 +149,5 @@ async function enviarPredicciones() {
 }
 
 window.enviarPredicciones = enviarPredicciones;
+
+console.log("FUNCION REGISTRADA");
