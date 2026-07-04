@@ -136,12 +136,14 @@ async function enviarPredicciones() {
 
         alert("✅ Predicciones enviadas correctamente.");
 
-    } catch (error) {
+        } catch (error) {
 
         console.error(error);
 
         alert("❌ Error al enviar las predicciones.");
 
     }
+
+}
 
 window.enviarPredicciones = enviarPredicciones;
