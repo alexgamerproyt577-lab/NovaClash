@@ -79,8 +79,44 @@ ${partido[1]}
 
 function enviarPredicciones(){
 
-const nombre=document.getElementById("nombre").value;
+    const nombre = document.getElementById("nombre").value;
 
-alert("¡Gracias por participar, "+nombre+"!");
+    if(nombre==""){
+
+        alert("Escribe tu nombre o Nick");
+
+        return;
+
+    }
+
+    const datos={
+
+        nombre:nombre,
+
+        predicciones:[]
+
+    };
+
+    equipos.forEach((partido,i)=>{
+
+        const ganador=document.querySelector('input[name="g'+i+'"]:checked');
+
+        const resultado=document.querySelector('input[name="r'+i+'"]:checked');
+
+        datos.predicciones.push({
+
+            partido:i+1,
+
+            ganador:ganador?ganador.value:"",
+
+            resultado:resultado?resultado.value:""
+
+        });
+
+    });
+
+    localStorage.setItem("pickem",JSON.stringify(datos));
+
+    alert("✅ Predicciones guardadas correctamente.");
 
 }
