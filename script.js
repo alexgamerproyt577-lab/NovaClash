@@ -144,4 +144,4 @@ async function enviarPredicciones() {
 
     }
 
-}
+window.enviarPredicciones = enviarPredicciones;
