@@ -1,7 +1,7 @@
 const equipos = [
 
-["Equipo 1","Equipo 2"],
-["Equipo 3","Equipo 4"],
+["Los Squidibi Sigma","Gigachad"],
+["CPH Brazinos","The gods of war"],
 ["Equipo 5","Equipo 6"],
 ["Equipo 7","Equipo 8"],
 ["Equipo 9","Equipo 10"],
