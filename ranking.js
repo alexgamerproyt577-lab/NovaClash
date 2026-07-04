@@ -48,7 +48,7 @@ async function cargarRanking() {
       jugadores[nombre] = 0;
     }
 
-console.log(data);
+console.log(JSON.stringify(data, null, 2));
 
 if (!data.predicciones) {
   console.log("Documento sin predicciones:", data);
