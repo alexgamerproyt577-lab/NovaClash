@@ -2,97 +2,238 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Arial, Helvetica, sans-serif;
 }
 
 body{
-    background:#0b0b14;
+
+    font-family:'Orbitron',sans-serif;
+
+    background:
+    radial-gradient(circle at top,#2b0b5e 0%,#121222 40%,#090912 100%);
+
     color:white;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+
     min-height:100vh;
-    padding:20px;
+
+    overflow-x:hidden;
+
 }
 
-.container{
-    width:100%;
-    max-width:450px;
-    background:#151526;
-    border:2px solid #7d3cff;
-    border-radius:25px;
-    padding:30px;
-    text-align:center;
-    box-shadow:0 0 20px #7d3cff;
+.fondo{
+
+    position:fixed;
+
+    inset:0;
+
+    background-image:
+
+    radial-gradient(#7b2cff55 1px,transparent 1px),
+    radial-gradient(#00bfff33 1px,transparent 1px);
+
+    background-size:70px 70px,120px 120px;
+
+    animation:mover 15s linear infinite;
+
+    z-index:-1;
+
+}
+
+@keyframes mover{
+
+from{
+
+transform:translateY(0px);
+
+}
+
+to{
+
+transform:translateY(-70px);
+
+}
+
+}
+
+.contenedor{
+
+max-width:900px;
+
+margin:auto;
+
+padding:70px 25px;
+
+text-align:center;
+
 }
 
 .logo{
-    width:170px;
-    margin-bottom:20px;
+
+width:190px;
+
+margin-bottom:25px;
+
+filter:
+drop-shadow(0 0 20px #9b5cff)
+drop-shadow(0 0 40px #6d3dff);
+
 }
 
 h1{
-    color:#9d7dff;
-    margin-bottom:20px;
-    text-shadow:0 0 10px #7d3cff;
+
+font-size:58px;
+
+color:white;
+
+letter-spacing:4px;
+
+text-shadow:
+0 0 15px #7f4dff,
+0 0 35px #a74cff;
+
+}
+
+h2{
+
+margin-top:15px;
+
+font-size:34px;
+
+color:#b78cff;
+
 }
 
 .descripcion{
-    font-size:17px;
-    margin-bottom:25px;
-    color:#ddd;
+
+margin:35px auto;
+
+font-size:20px;
+
+line-height:1.8;
+
+max-width:650px;
+
+color:#dddddd;
+
 }
 
-.reglas{
-    background:#1d1d33;
-    border-radius:15px;
-    padding:20px;
-    margin-bottom:30px;
-    border:1px solid #5f3cff;
+.premio{
+
+margin:40px auto;
+
+width:320px;
+
+padding:25px;
+
+border:2px solid #8f4cff;
+
+border-radius:18px;
+
+background:#ffffff08;
+
+box-shadow:
+
+0 0 25px #7b2cff88,
+
+inset 0 0 25px #7b2cff22;
+
+backdrop-filter:blur(8px);
+
 }
 
-.reglas h2{
-    color:#9d7dff;
-    margin-bottom:10px;
-}
+.premio h3{
 
-.reglas p{
-    margin:10px 0;
+margin-top:10px;
+
+font-size:28px;
+
+color:#ffdf55;
+
 }
 
 button{
-    width:100%;
-    padding:18px;
-    border:none;
-    border-radius:15px;
-    background:#7d3cff;
-    color:white;
-    font-size:20px;
-    font-weight:bold;
-    cursor:pointer;
-    box-shadow:0 0 20px #7d3cff;
-    transition:0.3s;
+
+margin-top:35px;
+
+padding:18px 70px;
+
+font-size:24px;
+
+font-family:'Orbitron';
+
+font-weight:bold;
+
+border:none;
+
+border-radius:50px;
+
+cursor:pointer;
+
+background:linear-gradient(90deg,#5b2cff,#aa3fff);
+
+color:white;
+
+transition:.35s;
+
+box-shadow:0 0 35px #7b2cff;
+
 }
 
 button:hover{
-    transform:scale(1.05);
-    background:#9966ff;
-}.partido{
-    margin-top:20px;
-    padding:20px;
-    background:#1e1e33;
-    border-radius:15px;
-    border:2px solid #7d3cff;
-    box-shadow:0 0 10px #7d3cff;
+
+transform:scale(1.06);
+
+box-shadow:
+
+0 0 30px #7b2cff,
+
+0 0 60px #b245ff;
+
 }
 
-.partido h2{
-    margin-bottom:20px;
-    color:#9d7dff;
+a{
+
+text-decoration:none;
+
 }
 
-.partido label{
-    display:block;
-    margin:15px 0;
-    font-size:18px;
+@media(max-width:700px){
+
+h1{
+
+font-size:40px;
+
+}
+
+h2{
+
+font-size:25px;
+
+}
+
+.descripcion{
+
+font-size:17px;
+
+}
+
+.logo{
+
+width:150px;
+
+}
+
+button{
+
+width:100%;
+
+font-size:20px;
+
+}
+
+.premio{
+
+width:100%;
+
+}
+
 }
