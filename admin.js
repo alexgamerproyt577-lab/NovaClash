@@ -80,11 +80,11 @@ const resultado=document.querySelector(`input[name="r${i}"]:checked`);
 
 if(!ganador || !resultado) continue;
 
-await addDoc(collection(db,"resultados"),{
+await setDoc(doc(db, "resultados", `partido${i+1}`), {
 
-partido:i+1,
-ganador:ganador.value,
-resultado:resultado.value
+  partido: i + 1,
+  ganador: ganador.value,
+  resultado: resultado.value
 
 });
 
