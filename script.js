@@ -20,8 +20,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const equipos = [
+const bloqueActivo = 1;
 
+const equiposBloque1 = [
 ["Los Squidibi Sigma","Gigachad"],
 ["CPH Brazinos","The gods of war"],
 ["Equipo 5","Equipo 6"],
@@ -29,7 +30,10 @@ const equipos = [
 ["Equipo 9","Equipo 10"],
 ["Equipo 11","Equipo 12"],
 ["Equipo 13","Equipo 14"],
-["Equipo 15","Equipo 16"],
+["Equipo 15","Equipo 16"]
+];
+
+const equiposBloque2 = [
 ["Equipo 17","Equipo 18"],
 ["Equipo 19","Equipo 20"],
 ["Equipo 21","Equipo 22"],
@@ -38,6 +42,9 @@ const equipos = [
 ["Equipo 27","Equipo 28"],
 ["Equipo 29","Equipo 30"],
 ["Equipo 31","Equipo 32"]
+];
+
+const equipos = bloqueActivo === 1 ? equiposBloque1 : equiposBloque2;
 
 ];
 
