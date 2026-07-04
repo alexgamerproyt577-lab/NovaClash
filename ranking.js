@@ -48,6 +48,13 @@ async function cargarRanking() {
       jugadores[nombre] = 0;
     }
 
+console.log(data);
+
+if (!data.predicciones) {
+  console.log("Documento sin predicciones:", data);
+  return;
+}
+    
    data.predicciones.forEach(p => {
 
   const real = resultados[p.partido];
