@@ -1,7 +1,7 @@
 import {
   getFirestore,
-  collection,
-  addDoc
+  doc,
+  setDoc
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
