@@ -46,8 +46,6 @@ const equiposBloque2 = [
 
 const equipos = bloqueActivo === 1 ? equiposBloque1 : equiposBloque2;
 
-];
-
 const contenedor=document.getElementById("partidos");
 
 if(contenedor){
