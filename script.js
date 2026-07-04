@@ -106,8 +106,6 @@ ${partido[1]}
 
 async function enviarPredicciones() {
 
-  window.enviarPredicciones = enviarPredicciones;
-
     const nombre = document.getElementById("nombre").value;
 
     if (nombre == "") {
