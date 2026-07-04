@@ -6,6 +6,8 @@ import {
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
 
+import resultados from "./resultados.js";
+
 /* =========================
    FIREBASE CONFIG
 ========================= */
@@ -46,23 +48,27 @@ async function cargarRanking() {
       jugadores[nombre] = 0;
     }
 
-    data.predicciones.forEach(p => {
+   data.predicciones.forEach(p => {
 
-      if (!p.ganador) return;
+  const real = resultados[p.partido];
 
-      let puntos = 0;
+  if (!real) return;
 
-      // 2 puntos por acertar ganador
-      puntos += 2;
+  let puntos = 0;
 
-      // 1 punto SOLO si es 2-1
-      if (p.resultado === "2-1") {
-        puntos += 1;
-      }
+  // +2 si acertó el ganador
+  if (p.ganador === real.ganador) {
+    puntos += 2;
 
-      jugadores[nombre] += puntos;
+    // +1 SOLO si además acertó el marcador
+    if (p.resultado === real.resultado) {
+      puntos += 1;
+    }
+  }
 
-    });
+  jugadores[nombre] += puntos;
+
+});
 
   });
 
