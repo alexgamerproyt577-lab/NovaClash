@@ -77,46 +77,51 @@ ${partido[1]}
 
 }
 
-function enviarPredicciones(){
+async function enviarPredicciones() {
 
     const nombre = document.getElementById("nombre").value;
 
-    if(nombre==""){
-
+    if (nombre == "") {
         alert("Escribe tu nombre o Nick");
-
         return;
-
     }
 
-    const datos={
-
-        nombre:nombre,
-
-        predicciones:[]
-
+    const datos = {
+        nombre: nombre,
+        fecha: new Date().toLocaleString(),
+        predicciones: []
     };
 
-    equipos.forEach((partido,i)=>{
+    equipos.forEach((partido, i) => {
 
-        const ganador=document.querySelector('input[name="g'+i+'"]:checked');
-
-        const resultado=document.querySelector('input[name="r'+i+'"]:checked');
+        const ganador = document.querySelector('input[name="g' + i + '"]:checked');
+        const resultado = document.querySelector('input[name="r' + i + '"]:checked');
 
         datos.predicciones.push({
-
-            partido:i+1,
-
-            ganador:ganador?ganador.value:"",
-
-            resultado:resultado?resultado.value:""
-
+            partido: i + 1,
+            equipo1: partido[0],
+            equipo2: partido[1],
+            ganador: ganador ? ganador.value : "",
+            resultado: resultado ? resultado.value : ""
         });
 
     });
 
-    localStorage.setItem("pickem",JSON.stringify(datos));
+    try {
 
-    alert("✅ Predicciones guardadas correctamente.");
+        await window.addDoc(
+            window.collection(window.db, "predicciones"),
+            datos
+        );
+
+        alert("✅ Predicciones enviadas correctamente.");
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("❌ Error al enviar las predicciones.");
+
+    }
 
 }
