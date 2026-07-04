@@ -1,35 +1,67 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Predicciones - Nova Clash</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="style.css">
+<title>Predicciones - Nova Clash</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+
 </head>
 <body>
 
-<div class="container">
+<nav class="navbar">
 
-    <h1>Predicciones</h1>
+    <div class="nav-logo">
+        NOVA CLASH
+    </div>
 
-    <p>Completa tus predicciones para todos los partidos.</p>
+    <div class="nav-links">
 
-    <div id="partidos"></div>
+        <a href="index.html">Inicio</a>
 
-    <br>
+        <a href="predicciones.html">Pick'Em</a>
 
-    <input
-        type="text"
-        id="nombre"
-        placeholder="Escribe tu nombre o Nick"
-    >
+        <a href="ranking.html">Ranking</a>
 
-    <br><br>
+        <a href="reglas.html">Reglas</a>
 
-    <button onclick="enviarPredicciones()">
-        ENVIAR PREDICCIONES
-    </button>
+    </div>
+
+</nav>
+
+<div class="contenedor">
+
+<h1>🎯 Pick'Em</h1>
+
+<p class="descripcion">
+
+Completa tus predicciones para todos los partidos del torneo.
+
+</p>
+
+<div id="partidos"></div>
+
+<br>
+
+<input
+type="text"
+id="nombre"
+placeholder="Escribe tu nombre o Nick">
+
+<br><br>
+
+<button onclick="enviarPredicciones()">
+
+ENVIAR PREDICCIONES
+
+</button>
 
 </div>
 
