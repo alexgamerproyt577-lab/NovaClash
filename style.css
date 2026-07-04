@@ -322,3 +322,65 @@ justify-content:center;
 }
 
 }
+/* ===== ESTADÍSTICAS ===== */
+
+.estadisticas{
+
+display:flex;
+
+justify-content:center;
+
+gap:25px;
+
+margin-top:60px;
+
+flex-wrap:wrap;
+
+}
+
+.card{
+
+width:180px;
+
+padding:25px;
+
+background:rgba(255,255,255,.05);
+
+border:1px solid rgba(140,90,255,.4);
+
+border-radius:18px;
+
+backdrop-filter:blur(10px);
+
+transition:.35s;
+
+box-shadow:0 0 20px rgba(123,44,255,.25);
+
+}
+
+.card:hover{
+
+transform:translateY(-8px);
+
+box-shadow:
+0 0 35px rgba(123,44,255,.6);
+
+}
+
+.card h3{
+
+font-size:42px;
+
+color:#b366ff;
+
+margin-bottom:10px;
+
+}
+
+.card p{
+
+color:#ddd;
+
+font-size:18px;
+
+}
