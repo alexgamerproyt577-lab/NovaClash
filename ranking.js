@@ -6,8 +6,6 @@ import {
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
 
-import resultados from "./resultados.js";
-
 /* =========================
    FIREBASE CONFIG
 ========================= */
@@ -36,6 +34,19 @@ async function cargarRanking() {
   contenedor.innerHTML = "<p>Cargando ranking...</p>";
 
   const snap = await getDocs(collection(db, "predicciones"));
+
+  const resultadosSnap = await getDocs(collection(db, "resultados"));
+
+const resultados = {};
+
+resultadosSnap.forEach(doc => {
+  const r = doc.data();
+
+  resultados[r.partido] = {
+    ganador: r.ganador,
+    resultado: r.resultado
+  };
+});
 
   const jugadores = {};
 
