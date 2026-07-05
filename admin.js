@@ -1,15 +1,13 @@
 import {
-  doc,
-  setDoc,
-  getDoc
+    doc,
+    setDoc,
+    getDoc
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
 
 import { db } from "./firebase.js";
 import { equiposBloque1, equiposBloque2 } from "./equipos.js";
 
-import { BLOQUE_ACTIVO } from "./config.js";
-
-const bloqueActivo = BLOQUE_ACTIVO;
+const bloqueActivo = 1;
 
 const partidos =
     bloqueActivo === 1
@@ -18,94 +16,177 @@ const partidos =
 
 const contenedor = document.getElementById("adminPartidos");
 
-partidos.forEach((p,i)=>{
+/* ===========================
+   CARGAR PARTIDOS
+=========================== */
 
-contenedor.innerHTML += `
+partidos.forEach((p, i) => {
+
+    contenedor.innerHTML += `
+
 <div class="partido">
 
-<h2>Partido ${i+1}</h2>
+<h2>Partido ${i + 1}</h2>
 
 <label>
+
 <input type="radio" name="g${i}" value="${p[0]}">
+
 ${p[0]}
+
 </label>
 
 <label>
+
 <input type="radio" name="g${i}" value="${p[1]}">
+
 ${p[1]}
+
 </label>
 
 <br><br>
 
 <label>
+
 <input type="radio" name="r${i}" value="2-0">
+
 2-0
+
 </label>
 
 <label>
+
 <input type="radio" name="r${i}" value="2-1">
+
 2-1
+
 </label>
 
-</div><br>
+</div>
+
+<br>
+
 `;
 
 });
 
 contenedor.innerHTML += `
+
 <button onclick="guardarResultados()">
+
 Guardar Resultados
+
 </button>
+
 `;
 
-async function guardarResultados(){
+/* ===========================
+   GUARDAR RESULTADOS
+=========================== */
 
-for(let i=0;i<partidos.length;i++){
+async function guardarResultados() {
 
-const ganador=document.querySelector(`input[name="g${i}"]:checked`);
-const resultado=document.querySelector(`input[name="r${i}"]:checked`);
+    for (let i = 0; i < partidos.length; i++) {
 
-if(!ganador || !resultado) continue;
+        const ganador = document.querySelector(`input[name="g${i}"]:checked`);
 
-await setDoc(doc(db, "resultados", `partido${i+1}`), {
+        const resultado = document.querySelector(`input[name="r${i}"]:checked`);
 
-  partido: i + 1,
-  ganador: ganador.value,
-  resultado: resultado.value
+        if (!ganador || !resultado) continue;
 
-});
+        await setDoc(
+            doc(db, "resultados", `partido${i + 1}`),
+            {
+                partido: i + 1,
+                ganador: ganador.value,
+                resultado: resultado.value
+            }
+        );
+
+    }
+
+    alert("Resultados guardados correctamente.");
 
 }
 
-alert("Resultados guardados correctamente");
+window.guardarResultados = guardarResultados;
 
-}
-
-window.guardarResultados=guardarResultados;
+/* ===========================
+   PREDICCIONES ABIERTAS
+=========================== */
 
 async function guardarEstado() {
 
-    const abierto = document.getElementById("estadoPredicciones").checked;
+    const abierto =
+        document.getElementById("estadoPredicciones").checked;
 
-    await setDoc(doc(db, "configuracion", "predicciones"), {
-        abiertas: abierto
-    });
+    await setDoc(
+        doc(db, "configuracion", "predicciones"),
+        {
+            abiertas: abierto
+        }
+    );
 
-    alert("Estado de las predicciones actualizado.");
+    alert("Estado actualizado.");
+
 }
 
 async function cargarEstado() {
 
-    const ref = doc(db, "configuracion", "predicciones");
-    const snap = await getDoc(ref);
+    const snap = await getDoc(
+        doc(db, "configuracion", "predicciones")
+    );
 
     if (snap.exists()) {
+
         document.getElementById("estadoPredicciones").checked =
             snap.data().abiertas;
+
     }
 
 }
 
 window.guardarEstado = guardarEstado;
 
+/* ===========================
+   BLOQUE ACTIVO
+=========================== */
+
+async function guardarBloque() {
+
+    const bloque = Number(
+        document.getElementById("bloqueActivo").value
+    );
+
+    await setDoc(
+        doc(db, "configuracion", "torneo"),
+        {
+            bloqueActivo: bloque
+        }
+    );
+
+    alert("Bloque actualizado.");
+
+}
+
+async function cargarBloque() {
+
+    const snap = await getDoc(
+        doc(db, "configuracion", "torneo")
+    );
+
+    if (!snap.exists()) return;
+
+    document.getElementById("bloqueActivo").value =
+        snap.data().bloqueActivo;
+
+}
+
+window.guardarBloque = guardarBloque;
+
+/* ===========================
+   INICIO
+=========================== */
+
 cargarEstado();
+cargarBloque();
