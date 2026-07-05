@@ -188,73 +188,79 @@ async function cargarEstadisticas() {
 
     const contenedor = document.getElementById("estadisticas");
 
-    const snap = await getDocs(
-        collection(db, "predicciones")
-    );
+    try {
 
-    let html = "";
+        const snap = await getDocs(collection(db, "predicciones"));
 
-    for (let i = 0; i < partidos.length; i++) {
+        let html = "";
 
-        const votos = {};
+        for (let i = 0; i < partidos.length; i++) {
 
-        votos[partidos[i][0]] = 0;
-        votos[partidos[i][1]] = 0;
+            const votos = {};
 
-        let total = 0;
+            votos[partidos[i][0]] = 0;
+            votos[partidos[i][1]] = 0;
 
-        snap.forEach(doc => {
+            let total = 0;
 
-            const data = doc.data();
+            snap.forEach(documento => {
 
-            if (!data.predicciones) return;
+                const data = documento.data();
 
-            const p = data.predicciones[i];
+                if (!data.predicciones) return;
 
-            if (!p) return;
+                const p = data.predicciones[i];
 
-            if (p.ganador) {
+                if (!p) return;
 
-                votos[p.ganador]++;
+                if (p.ganador) {
 
-                total++;
+                    if (votos[p.ganador] !== undefined) {
 
-            }
+                        votos[p.ganador]++;
 
-        });
+                        total++;
 
-        const e1 = partidos[i][0];
-        const e2 = partidos[i][1];
+                    }
 
-        const p1 = total === 0 ? 0 :
-            Math.round(votos[e1] / total * 100);
+                }
 
-        const p2 = total === 0 ? 0 :
-            Math.round(votos[e2] / total * 100);
+            });
 
-        html += `
+            const e1 = partidos[i][0];
+            const e2 = partidos[i][1];
 
-<div class="partido">
+            const porcentaje1 =
+                total ? Math.round(votos[e1] * 100 / total) : 0;
 
-<h2>Partido ${i + 1}</h2>
+            const porcentaje2 =
+                total ? Math.round(votos[e2] * 100 / total) : 0;
 
-<p>${e1}: <b>${p1}%</b></p>
+            html += `
+                <div class="partido">
+                    <h2>Partido ${i + 1}</h2>
 
-<p>${e2}: <b>${p2}%</b></p>
+                    <p>${e1}: ${votos[e1]} votos (${porcentaje1}%)</p>
 
-</div>
+                    <p>${e2}: ${votos[e2]} votos (${porcentaje2}%)</p>
+                </div>
 
-<br>
+                <br>
+            `;
+        }
 
-`;
+        contenedor.innerHTML = html;
+
+    } catch (error) {
+
+        console.error("ERROR ESTADISTICAS:", error);
+
+        contenedor.innerHTML =
+            "<h2>Error al cargar estadísticas.</h2>";
 
     }
 
-    contenedor.innerHTML = html;
-
 }
-
-cargarEstadisticas();
 
 window.guardarBloque = guardarBloque;
 
