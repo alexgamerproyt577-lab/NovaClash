@@ -1,33 +1,18 @@
 import { equiposBloque1 } from "./equipos.js";
 
-console.log("Bracket cargado");
-console.log(equiposBloque1);
+const r16 = document.getElementById("r16");
 
-import { db } from "./firebase.js";
-import { equiposBloque1, equiposBloque2 } from "./equipos.js";
+equiposBloque1.forEach((partido)=>{
 
-const ronda16 = document.getElementById("ronda16");
+    r16.innerHTML += `
 
-// Por ahora mostramos el bloque 1
-const partidos = equiposBloque1;
+    <div class="match">
 
-partidos.forEach((partido, i) => {
+        <div class="equipo">${partido[0]}</div>
 
-    ronda16.innerHTML += `
-
-    <div class="partido">
-
-        <h3>Partido ${i + 1}</h3>
-
-        <p>${partido[0]}</p>
-
-        <p>VS</p>
-
-        <p>${partido[1]}</p>
+        <div class="equipo">${partido[1]}</div>
 
     </div>
-
-    <br>
 
     `;
 
