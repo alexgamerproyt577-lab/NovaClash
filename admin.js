@@ -9,12 +9,16 @@ import {
 import { db } from "./firebase.js";
 import { equiposBloque1, equiposBloque2 } from "./equipos.js";
 
+console.log("1 - Admin.js cargado");
+
 const bloqueActivo = 1;
 
 const partidos =
     bloqueActivo === 1
         ? equiposBloque1
         : equiposBloque2;
+
+console.log("2 - Partidos cargados");
 
 const contenedor = document.getElementById("adminPartidos");
 
@@ -31,37 +35,25 @@ partidos.forEach((p, i) => {
 <h2>Partido ${i + 1}</h2>
 
 <label>
-
 <input type="radio" name="g${i}" value="${p[0]}">
-
 ${p[0]}
-
 </label>
 
 <label>
-
 <input type="radio" name="g${i}" value="${p[1]}">
-
 ${p[1]}
-
 </label>
 
 <br><br>
 
 <label>
-
 <input type="radio" name="r${i}" value="2-0">
-
 2-0
-
 </label>
 
 <label>
-
 <input type="radio" name="r${i}" value="2-1">
-
 2-1
-
 </label>
 
 </div>
@@ -72,14 +64,12 @@ ${p[1]}
 
 });
 
+console.log("3 - Partidos renderizados");
+
 contenedor.innerHTML += `
-
 <button onclick="guardarResultados()">
-
 Guardar Resultados
-
 </button>
-
 `;
 
 /* ===========================
@@ -91,7 +81,6 @@ async function guardarResultados() {
     for (let i = 0; i < partidos.length; i++) {
 
         const ganador = document.querySelector(`input[name="g${i}"]:checked`);
-
         const resultado = document.querySelector(`input[name="r${i}"]:checked`);
 
         if (!ganador || !resultado) continue;
@@ -184,87 +173,90 @@ async function cargarBloque() {
 
 }
 
+window.guardarBloque = guardarBloque;
+
+/* ===========================
+   ESTADÍSTICAS
+=========================== */
+
 async function cargarEstadisticas() {
 
-  console.log("ENTRÓ A ESTADÍSTICAS");
+    console.log("5 - Entró a cargarEstadisticas");
 
     const contenedor = document.getElementById("estadisticas");
 
-    try {
+    if (!contenedor) {
+        console.log("No existe el div #estadisticas");
+        return;
+    }
 
-        const snap = await getDocs(collection(db, "predicciones"));
+    const snap = await getDocs(collection(db, "predicciones"));
 
-        let html = "";
+    console.log("Cantidad de documentos:", snap.size);
 
-        for (let i = 0; i < partidos.length; i++) {
+    let html = "";
 
-            const votos = {};
+    for (let i = 0; i < partidos.length; i++) {
 
-            votos[partidos[i][0]] = 0;
-            votos[partidos[i][1]] = 0;
+        const votos = {};
 
-            let total = 0;
+        votos[partidos[i][0]] = 0;
+        votos[partidos[i][1]] = 0;
 
-            snap.forEach(documento => {
+        let total = 0;
 
-                const data = documento.data();
+        snap.forEach(documento => {
 
-                if (!data.predicciones) return;
+            const data = documento.data();
 
-                const p = data.predicciones[i];
+            if (!data.predicciones) return;
 
-                if (!p) return;
+            const p = data.predicciones[i];
 
-                if (p.ganador) {
+            if (!p) return;
 
-                    if (votos[p.ganador] !== undefined) {
+            if (p.ganador && votos[p.ganador] !== undefined) {
 
-                        votos[p.ganador]++;
+                votos[p.ganador]++;
+                total++;
 
-                        total++;
+            }
 
-                    }
+        });
 
-                }
+        const e1 = partidos[i][0];
+        const e2 = partidos[i][1];
 
-            });
+        const p1 = total ? Math.round(votos[e1] * 100 / total) : 0;
+        const p2 = total ? Math.round(votos[e2] * 100 / total) : 0;
 
-            const e1 = partidos[i][0];
-            const e2 = partidos[i][1];
+        html += `
+<div class="partido">
 
-            const porcentaje1 =
-                total ? Math.round(votos[e1] * 100 / total) : 0;
+<h2>Partido ${i + 1}</h2>
 
-            const porcentaje2 =
-                total ? Math.round(votos[e2] * 100 / total) : 0;
+<p>${e1}: ${votos[e1]} votos (${p1}%)</p>
 
-            html += `
-                <div class="partido">
-                    <h2>Partido ${i + 1}</h2>
+<p>${e2}: ${votos[e2]} votos (${p2}%)</p>
 
-                    <p>${e1}: ${votos[e1]} votos (${porcentaje1}%)</p>
+</div>
 
-                    <p>${e2}: ${votos[e2]} votos (${porcentaje2}%)</p>
-                </div>
-
-                <br>
-            `;
-        }
-
-        contenedor.innerHTML = html;
-
-    } catch (error) {
-
-        console.error("ERROR ESTADISTICAS:", error);
-
-        contenedor.innerHTML =
-            "<h2>Error al cargar estadísticas.</h2>";
+<br>
+`;
 
     }
 
+    console.log("HTML generado:", html);
+
+    contenedor.innerHTML = html;
+
 }
 
-window.guardarBloque = guardarBloque;
+console.log("4 - Antes de cargarEstadisticas");
+
+cargarEstadisticas();
+
+console.log("6 - Después de cargarEstadisticas");
 
 /* ===========================
    INICIO
