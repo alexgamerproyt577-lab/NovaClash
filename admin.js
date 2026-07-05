@@ -1,3 +1,5 @@
+alert("ADMIN.JS CARGADO");
+
 import {
   doc,
   setDoc,
