@@ -54,7 +54,6 @@ partidos.forEach((p, i) => {
       </label>
 
     </div>
-
     <br>
   `;
 });
@@ -71,6 +70,7 @@ contenedor.innerHTML += `
 
 async function guardarResultados() {
 
+  // guardar resultados normales
   for (let i = 0; i < partidos.length; i++) {
 
     const ganador = document.querySelector(`input[name="g${i}"]:checked`);
@@ -85,10 +85,49 @@ async function guardarResultados() {
     });
   }
 
-  alert("Resultados guardados correctamente.");
+  // 🔥 actualizar llave automáticamente
+  await actualizarLlave();
+
+  alert("Resultados guardados + llave actualizada");
 }
 
 window.guardarResultados = guardarResultados;
+
+/* =========================
+   LLAVE AUTOMÁTICA
+========================= */
+
+async function actualizarLlave() {
+
+  const ref = doc(db, "configuracion", "llave");
+  const snap = await getDoc(ref);
+
+  let ronda = 1;
+
+  if (snap.exists()) {
+    ronda = snap.data().ronda + 1;
+  }
+
+  let nuevosPartidos = [];
+
+  for (let i = 0; i < partidos.length; i += 2) {
+
+    const r1 = await getDoc(doc(db, "resultados", `partido${i + 1}`));
+    const r2 = await getDoc(doc(db, "resultados", `partido${i + 2}`));
+
+    if (!r1.exists() || !r2.exists()) continue;
+
+    nuevosPartidos.push([
+      r1.data().ganador,
+      r2.data().ganador
+    ]);
+  }
+
+  await setDoc(ref, {
+    ronda,
+    partidos: nuevosPartidos
+  });
+}
 
 /* =========================
    ESTADO PREDICCIONES
@@ -118,7 +157,7 @@ async function cargarEstado() {
 window.guardarEstado = guardarEstado;
 
 /* =========================
-   BLOQUE ACTIVO
+   BLOQUE
 ========================= */
 
 async function guardarBloque() {
