@@ -5,6 +5,8 @@ import {
   getDoc
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
 
+import { BLOQUE_ACTIVO } from "./config.js";
+
 import { db } from "./firebase.js";
 import { equiposBloque1, equiposBloque2 } from "./equipos.js";
 
@@ -14,7 +16,7 @@ console.log("SCRIPT CARGADO");
    CONFIGURACIÓN
 ========================= */
 
-const bloqueActivo = 1;
+const bloqueActivo = BLOQUE_ACTIVO;
 
 const equipos = bloqueActivo === 1
   ? equiposBloque1
