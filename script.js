@@ -16,11 +16,8 @@ console.log("SCRIPT CARGADO");
    CONFIGURACIÓN
 ========================= */
 
-const bloqueActivo = BLOQUE_ACTIVO;
-
-const equipos = bloqueActivo === 1
-  ? equiposBloque1
-  : equiposBloque2;
+let bloqueActivo = 1;
+let equipos = [];
 
 /* =========================
    VERIFICAR SI LAS PREDICCIONES ESTÁN ABIERTAS
@@ -53,15 +50,67 @@ async function verificarEstadoPredicciones() {
 
 window.addEventListener("DOMContentLoaded", async () => {
 
-  const abiertas = await verificarEstadoPredicciones();
+    const abiertas = await verificarEstadoPredicciones();
 
-  if (!abiertas) return;
+    if (!abiertas) return;
 
-  const contenedor = document.getElementById("partidos");
+    // Leer el bloque activo desde Firebase
+    const torneoRef = doc(db, "configuracion", "torneo");
+    const torneoSnap = await getDoc(torneoRef);
 
-  if (!contenedor) return;
+    if (torneoSnap.exists()) {
+        bloqueActivo = torneoSnap.data().bloqueActivo;
+    }
 
-  equipos.forEach((partido, i) => {
+    equipos = bloqueActivo === 1
+        ? equiposBloque1
+        : equiposBloque2;
+
+    const contenedor = document.getElementById("partidos");
+
+    contenedor.innerHTML = "";
+
+    equipos.forEach((partido, i) => {
+
+        contenedor.innerHTML += `
+
+<div class="partido">
+
+<h2>Partido ${i+1}</h2>
+
+<p><b>${partido[0]}</b> VS <b>${partido[1]}</b></p>
+
+<label>
+<input type="radio" name="g${i}" value="${partido[0]}">
+${partido[0]}
+</label>
+
+<label>
+<input type="radio" name="g${i}" value="${partido[1]}">
+${partido[1]}
+</label>
+
+<br>
+
+<label>
+<input type="radio" name="r${i}" value="2-0">
+2-0
+</label>
+
+<label>
+<input type="radio" name="r${i}" value="2-1">
+2-1
+</label>
+
+</div>
+
+<br>
+
+`;
+
+    });
+
+});
 
     contenedor.innerHTML += `
 
