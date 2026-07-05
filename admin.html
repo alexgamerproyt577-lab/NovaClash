@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Panel Admin</title>
+<title>Panel Admin - Nova Clash</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -14,15 +14,20 @@
 
 <body>
 
-<div class="contenedor">
+<div class="container">
 
-<h1>Panel Administrador</h1>
+<h1>Panel de Administración</h1>
 
-  <h2>Predicciones</h2>
+<hr>
+
+<h2>Estado de las predicciones</h2>
 
 <label>
-    <input type="checkbox" id="estadoPredicciones">
-    Predicciones abiertas
+
+<input type="checkbox" id="estadoPredicciones">
+
+Predicciones abiertas
+
 </label>
 
 <br><br>
@@ -33,7 +38,25 @@ Guardar Estado
 
 <hr>
 
-<p>Resultados oficiales</p>
+<h2>Bloque de partidos</h2>
+
+<select id="bloqueActivo">
+
+<option value="1">16avos - Bloque 1</option>
+
+<option value="2">16avos - Bloque 2</option>
+
+</select>
+
+<br><br>
+
+<button onclick="guardarBloque()">
+Guardar Bloque
+</button>
+
+<hr>
+
+<h2>Resultados</h2>
 
 <div id="adminPartidos"></div>
 
@@ -42,5 +65,4 @@ Guardar Estado
 <script type="module" src="admin.js"></script>
 
 </body>
-
 </html>
