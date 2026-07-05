@@ -5,15 +5,13 @@ import {
   getDoc
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
 
-import { BLOQUE_ACTIVO } from "./config.js";
-
 import { db } from "./firebase.js";
 import { equiposBloque1, equiposBloque2 } from "./equipos.js";
 
 console.log("SCRIPT CARGADO");
 
 /* =========================
-   CONFIGURACIÓN
+   VARIABLES
 ========================= */
 
 let bloqueActivo = 1;
@@ -30,9 +28,8 @@ async function verificarEstadoPredicciones() {
 
   if (snap.exists() && snap.data().abiertas === false) {
 
-    document.getElementById("partidos").innerHTML = `
-      <h2>🔒 Las predicciones están cerradas.</h2>
-    `;
+    document.getElementById("partidos").innerHTML =
+      "<h2>🔒 Las predicciones están cerradas.</h2>";
 
     document.getElementById("nombre").style.display = "none";
 
@@ -42,6 +39,7 @@ async function verificarEstadoPredicciones() {
   }
 
   return true;
+
 }
 
 /* =========================
@@ -50,33 +48,34 @@ async function verificarEstadoPredicciones() {
 
 window.addEventListener("DOMContentLoaded", async () => {
 
-    const abiertas = await verificarEstadoPredicciones();
+  const abiertas = await verificarEstadoPredicciones();
 
-    if (!abiertas) return;
+  if (!abiertas) return;
 
-    // Leer el bloque activo desde Firebase
-    const torneoRef = doc(db, "configuracion", "torneo");
-    const torneoSnap = await getDoc(torneoRef);
+  // Leer el bloque activo desde Firebase
+  const torneoSnap = await getDoc(
+    doc(db, "configuracion", "torneo")
+  );
 
-    if (torneoSnap.exists()) {
-        bloqueActivo = torneoSnap.data().bloqueActivo;
-    }
+  if (torneoSnap.exists()) {
+    bloqueActivo = torneoSnap.data().bloqueActivo;
+  }
 
-    equipos = bloqueActivo === 1
-        ? equiposBloque1
-        : equiposBloque2;
+  equipos = bloqueActivo === 1
+    ? equiposBloque1
+    : equiposBloque2;
 
-    const contenedor = document.getElementById("partidos");
+  const contenedor = document.getElementById("partidos");
 
-    contenedor.innerHTML = "";
+  contenedor.innerHTML = "";
 
-    equipos.forEach((partido, i) => {
+  equipos.forEach((partido, i) => {
 
-        contenedor.innerHTML += `
+    contenedor.innerHTML += `
 
 <div class="partido">
 
-<h2>Partido ${i+1}</h2>
+<h2>Partido ${i + 1}</h2>
 
 <p><b>${partido[0]}</b> VS <b>${partido[1]}</b></p>
 
@@ -108,10 +107,9 @@ ${partido[1]}
 
 `;
 
-    });
+  });
 
 });
-
 
 /* =========================
    ENVIAR PREDICCIONES
@@ -143,9 +141,13 @@ async function enviarPredicciones() {
 
   equipos.forEach((partido, i) => {
 
-    const ganador = document.querySelector(`input[name="g${i}"]:checked`);
+    const ganador = document.querySelector(
+      `input[name="g${i}"]:checked`
+    );
 
-    const resultado = document.querySelector(`input[name="r${i}"]:checked`);
+    const resultado = document.querySelector(
+      `input[name="r${i}"]:checked`
+    );
 
     datos.predicciones.push({
 
@@ -166,11 +168,8 @@ async function enviarPredicciones() {
   try {
 
     await addDoc(
-
       collection(db, "predicciones"),
-
       datos
-
     );
 
     alert("✅ Predicciones enviadas correctamente.");
