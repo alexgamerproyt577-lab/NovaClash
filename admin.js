@@ -94,3 +94,30 @@ alert("Resultados guardados correctamente");
 }
 
 window.guardarResultados=guardarResultados;
+
+async function guardarEstado() {
+
+    const abierto = document.getElementById("estadoPredicciones").checked;
+
+    await setDoc(doc(db, "configuracion", "predicciones"), {
+        abiertas: abierto
+    });
+
+    alert("Estado de las predicciones actualizado.");
+}
+
+async function cargarEstado() {
+
+    const ref = doc(db, "configuracion", "predicciones");
+    const snap = await getDoc(ref);
+
+    if (snap.exists()) {
+        document.getElementById("estadoPredicciones").checked =
+            snap.data().abiertas;
+    }
+
+}
+
+window.guardarEstado = guardarEstado;
+
+cargarEstado();
