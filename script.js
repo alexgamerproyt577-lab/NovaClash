@@ -1,7 +1,9 @@
 import {
   getFirestore,
   collection,
-  addDoc
+  addDoc,
+  doc,
+  getDoc
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
@@ -19,6 +21,27 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
+async function verificarEstadoPredicciones() {
+
+    const ref = doc(db, "configuracion", "predicciones");
+    const snap = await getDoc(ref);
+
+    if (snap.exists() && snap.data().abiertas === false) {
+
+        document.getElementById("partidos").innerHTML = `
+            <h2>🔒 Las predicciones están cerradas.</h2>
+        `;
+
+        document.getElementById("nombre").style.display = "none";
+
+        document.querySelector("button").style.display = "none";
+
+        return false;
+    }
+
+    return true;
+}
 
 const bloqueActivo = 1;
 
@@ -154,5 +177,7 @@ alert("❌ Error al enviar predicciones");
 ========================= */
 
 window.enviarPredicciones = enviarPredicciones;
+
+verificarEstadoPredicciones();
 
 console.log("FUNCION REGISTRADA");
