@@ -1,3 +1,8 @@
+import { equiposBloque1 } from "./equipos.js";
+
+console.log("Bracket cargado");
+console.log(equiposBloque1);
+
 import { db } from "./firebase.js";
 import { equiposBloque1, equiposBloque2 } from "./equipos.js";
 
