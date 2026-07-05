@@ -186,6 +186,8 @@ async function cargarBloque() {
 
 async function cargarEstadisticas() {
 
+  console.log("ENTRÓ A ESTADÍSTICAS");
+
     const contenedor = document.getElementById("estadisticas");
 
     try {
