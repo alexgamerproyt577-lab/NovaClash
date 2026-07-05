@@ -7,7 +7,9 @@ import {
 import { db } from "./firebase.js";
 import { equiposBloque1, equiposBloque2 } from "./equipos.js";
 
-const bloqueActivo = 1;
+import { BLOQUE_ACTIVO } from "./config.js";
+
+const bloqueActivo = BLOQUE_ACTIVO;
 
 const partidos =
     bloqueActivo === 1
