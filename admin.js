@@ -1,36 +1,18 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
-
-console.log("initializeApp =", initializeApp);
-
 import {
-  getFirestore,
   doc,
   setDoc,
   getDoc
-} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js"; 
+} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCULLdWfSlZL2vNetwknkaEOj5fAsIIr6o",
-  authDomain: "nova-clash-8c78b.firebaseapp.com",
-  projectId: "nova-clash-8c78b",
-  storageBucket: "nova-clash-8c78b.firebasestorage.app",
-  messagingSenderId: "202679377197",
-  appId: "1:202679377197:web:b5ed1526028cac92aa07a4"
-};
+import { db } from "./firebase.js";
+import { equiposBloque1, equiposBloque2 } from "./equipos.js";
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const bloqueActivo = 1;
 
-const partidos = [
-["Los Squidibi Sigma","Gigachad"],
-["CPH Brazinos","The gods of war"],
-["Equipo 5","Equipo 6"],
-["Equipo 7","Equipo 8"],
-["Equipo 9","Equipo 10"],
-["Equipo 11","Equipo 12"],
-["Equipo 13","Equipo 14"],
-["Equipo 15","Equipo 16"]
-];
+const partidos =
+    bloqueActivo === 1
+        ? equiposBloque1
+        : equiposBloque2;
 
 const contenedor = document.getElementById("adminPartidos");
 
