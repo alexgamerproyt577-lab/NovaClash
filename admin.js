@@ -1,7 +1,9 @@
 import {
   doc,
   setDoc,
-  getDoc
+  getDoc,
+  collection,
+  getDocs
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
 
 import { db } from "./firebase.js";
@@ -21,7 +23,7 @@ const partidos =
 const contenedor = document.getElementById("adminPartidos");
 
 /* =========================
-   CARGAR PARTIDOS
+   RENDER PARTIDOS
 ========================= */
 
 partidos.forEach((p, i) => {
@@ -70,7 +72,6 @@ contenedor.innerHTML += `
 
 async function guardarResultados() {
 
-  // guardar resultados normales
   for (let i = 0; i < partidos.length; i++) {
 
     const ganador = document.querySelector(`input[name="g${i}"]:checked`);
@@ -85,47 +86,53 @@ async function guardarResultados() {
     });
   }
 
-  // 🔥 actualizar llave automáticamente
-  await actualizarLlave();
+  // 🔥 AVANZAR RONDA AUTOMÁTICAMENTE
+  await generarSiguienteRonda();
 
-  alert("Resultados guardados + llave actualizada");
+  alert("✔ Resultados guardados y ronda actualizada");
 }
 
 window.guardarResultados = guardarResultados;
 
 /* =========================
-   LLAVE AUTOMÁTICA
+   GENERAR SIGUIENTE RONDA
 ========================= */
 
-async function actualizarLlave() {
+async function generarSiguienteRonda() {
 
   const ref = doc(db, "configuracion", "llave");
   const snap = await getDoc(ref);
 
-  let ronda = 1;
+  let ronda = snap.exists() ? snap.data().ronda : 1;
 
-  if (snap.exists()) {
-    ronda = snap.data().ronda + 1;
-  }
+  const resultadosSnap = await getDocs(collection(db, "resultados"));
 
-  let nuevosPartidos = [];
+  let partidosOrdenados = [];
 
-  for (let i = 0; i < partidos.length; i += 2) {
+  resultadosSnap.forEach(d => {
+    partidosOrdenados.push(d.data());
+  });
 
-    const r1 = await getDoc(doc(db, "resultados", `partido${i + 1}`));
-    const r2 = await getDoc(doc(db, "resultados", `partido${i + 2}`));
+  partidosOrdenados.sort((a, b) => a.partido - b.partido);
 
-    if (!r1.exists() || !r2.exists()) continue;
+  let nuevaRonda = [];
 
-    nuevosPartidos.push([
-      r1.data().ganador,
-      r2.data().ganador
+  for (let i = 0; i < partidosOrdenados.length; i += 2) {
+
+    const p1 = partidosOrdenados[i];
+    const p2 = partidosOrdenados[i + 1];
+
+    if (!p1 || !p2) continue;
+
+    nuevaRonda.push([
+      p1.ganador,
+      p2.ganador
     ]);
   }
 
   await setDoc(ref, {
-    ronda,
-    partidos: nuevosPartidos
+    ronda: ronda + 1,
+    partidos: nuevaRonda
   });
 }
 
@@ -157,7 +164,7 @@ async function cargarEstado() {
 window.guardarEstado = guardarEstado;
 
 /* =========================
-   BLOQUE
+   BLOQUE ACTIVO
 ========================= */
 
 async function guardarBloque() {
