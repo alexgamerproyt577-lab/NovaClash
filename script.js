@@ -1,26 +1,14 @@
 import {
-  getFirestore,
   collection,
   addDoc,
   doc,
   getDoc
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+import { db } from "./firebase.js";
+import { equiposBloque1, equiposBloque2 } from "./equipos.js";
 
 console.log("SCRIPT CARGADO");
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCULLdWfSlZL2vNetwknkaEOj5fAsIIr6o",
-  authDomain: "nova-clash-8c78b.firebaseapp.com",
-  projectId: "nova-clash-8c78b",
-  storageBucket: "nova-clash-8c78b.firebasestorage.app",
-  messagingSenderId: "202679377197",
-  appId: "1:202679377197:web:b5ed1526028cac92aa07a4"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
 
 async function verificarEstadoPredicciones() {
 
@@ -44,32 +32,6 @@ async function verificarEstadoPredicciones() {
 }
 
 const bloqueActivo = 1;
-
-/* =========================
-   EQUIPOS
-========================= */
-
-const equiposBloque1 = [
-["Los Squidibi Sigma","Gigachad"],
-["CPH Brazinos","The gods of war"],
-["Equipo 5","Equipo 6"],
-["Equipo 7","Equipo 8"],
-["Equipo 9","Equipo 10"],
-["Equipo 11","Equipo 12"],
-["Equipo 13","Equipo 14"],
-["Equipo 15","Equipo 16"]
-];
-
-const equiposBloque2 = [
-["Equipo 17","Equipo 18"],
-["Equipo 19","Equipo 20"],
-["Equipo 21","Equipo 22"],
-["Equipo 23","Equipo 24"],
-["Equipo 25","Equipo 26"],
-["Equipo 27","Equipo 28"],
-["Equipo 29","Equipo 30"],
-["Equipo 31","Equipo 32"]
-];
 
 const equipos = bloqueActivo === 1 ? equiposBloque1 : equiposBloque2;
 
