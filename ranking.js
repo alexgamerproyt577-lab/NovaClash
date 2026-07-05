@@ -1,120 +1,139 @@
 import {
-  getFirestore,
   collection,
   getDocs
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+import { db } from "./firebase.js";
+
+import {
+  PUNTOS_GANADOR,
+  PUNTOS_RESULTADO
+} from "./config.js";
 
 /* =========================
-   FIREBASE CONFIG
-========================= */
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCULLdWfSlZL2vNetwknkaEOj5fAsIIr6o",
-  authDomain: "nova-clash-8c78b.firebaseapp.com",
-  projectId: "nova-clash-8c78b",
-  storageBucket: "nova-clash-8c78b.firebasestorage.app",
-  messagingSenderId: "202679377197",
-  appId: "1:202679377197:web:b5ed1526028cac92aa07a4"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-/* =========================
-   CALCULAR RANKING
+   CARGAR RANKING
 ========================= */
 
 async function cargarRanking() {
 
   const contenedor = document.getElementById("ranking");
+
   if (!contenedor) return;
 
   contenedor.innerHTML = "<p>Cargando ranking...</p>";
 
-  const snap = await getDocs(collection(db, "predicciones"));
+  try {
 
-  const resultadosSnap = await getDocs(collection(db, "resultados"));
+    // Predicciones de todos los jugadores
+    const prediccionesSnap = await getDocs(
+      collection(db, "predicciones")
+    );
 
-const resultados = {};
+    // Resultados oficiales cargados desde el panel Admin
+    const resultadosSnap = await getDocs(
+      collection(db, "resultados")
+    );
 
-resultadosSnap.forEach(doc => {
-  const r = doc.data();
+    const resultados = {};
 
-  resultados[r.partido] = {
-    ganador: r.ganador,
-    resultado: r.resultado
-  };
-});
+    resultadosSnap.forEach(doc => {
 
-  const jugadores = {};
+      const r = doc.data();
 
-  snap.forEach(doc => {
+      resultados[r.partido] = {
+        ganador: r.ganador,
+        resultado: r.resultado
+      };
 
-    const data = doc.data();
-    const nombre = data.nombre;
+    });
 
-    if (!jugadores[nombre]) {
-      jugadores[nombre] = 0;
+    const jugadores = {};
+
+    prediccionesSnap.forEach(doc => {
+
+      const data = doc.data();
+
+      // Ignorar documentos viejos o inválidos
+      if (!data.nombre || !data.predicciones) return;
+
+      if (!jugadores[data.nombre]) {
+        jugadores[data.nombre] = 0;
+      }
+
+      data.predicciones.forEach(p => {
+
+        const real = resultados[p.partido];
+
+        // Si todavía no se cargó el resultado de ese partido
+        if (!real) return;
+
+        let puntos = 0;
+
+        // Ganador correcto
+        if (p.ganador === real.ganador) {
+
+          puntos += PUNTOS_GANADOR;
+
+          // Marcador correcto
+          if (p.resultado === real.resultado) {
+            puntos += PUNTOS_RESULTADO;
+          }
+
+        }
+
+        jugadores[data.nombre] += puntos;
+
+      });
+
+    });
+
+    const ranking = Object.entries(jugadores)
+      .sort((a, b) => b[1] - a[1]);
+
+    contenedor.innerHTML = "";
+
+    if (ranking.length === 0) {
+
+      contenedor.innerHTML =
+        "<p>No hay participantes todavía.</p>";
+
+      return;
+
     }
 
-console.log(JSON.stringify(data, null, 2));
+    ranking.forEach((jugador, i) => {
 
-if (!data.predicciones) {
-  console.log("Documento sin predicciones:", data);
-  return;
-}
-    
-   data.predicciones.forEach(p => {
+      let medalla = "";
 
-  const real = resultados[p.partido];
+      if (i === 0) medalla = "🥇";
+      else if (i === 1) medalla = "🥈";
+      else if (i === 2) medalla = "🥉";
 
-  if (!real) return;
+      contenedor.innerHTML += `
 
-  let puntos = 0;
+        <div class="partido">
 
-  // +2 si acertó el ganador
-  if (p.ganador === real.ganador) {
-    puntos += 2;
+          <h2>${medalla} #${i + 1} ${jugador[0]}</h2>
 
-    // +1 SOLO si además acertó el marcador
-    if (p.resultado === real.resultado) {
-      puntos += 1;
-    }
-  }
+          <p>Puntos: <b>${jugador[1]}</b></p>
 
-  jugadores[nombre] += puntos;
+        </div>
 
-});
+        <br>
 
-  });
+      `;
 
-  const ordenados = Object.entries(jugadores)
-    .sort((a, b) => b[1] - a[1]);
+    });
 
-  contenedor.innerHTML = "";
+  } catch (error) {
 
-  ordenados.forEach((j, i) => {
+    console.error(error);
 
-    contenedor.innerHTML += `
-      <div class="partido">
-        <h2>#${i + 1} ${j[0]}</h2>
-        <p>Puntos: <b>${j[1]}</b></p>
-      </div>
-      <br>
-    `;
+    contenedor.innerHTML =
+      "<p>Error al cargar el ranking.</p>";
 
-  });
-
-  if (ordenados.length === 0) {
-    contenedor.innerHTML = "<p>No hay predicciones aún.</p>";
   }
 
 }
-
-/* =========================
-   INICIAR
-========================= */
 
 cargarRanking();
