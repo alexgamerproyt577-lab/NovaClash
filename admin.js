@@ -1,7 +1,9 @@
 import {
-    doc,
-    setDoc,
-    getDoc
+  doc,
+  setDoc,
+  getDoc,
+  collection,
+  getDocs
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
 
 import { db } from "./firebase.js";
@@ -181,6 +183,78 @@ async function cargarBloque() {
         snap.data().bloqueActivo;
 
 }
+
+async function cargarEstadisticas() {
+
+    const contenedor = document.getElementById("estadisticas");
+
+    const snap = await getDocs(
+        collection(db, "predicciones")
+    );
+
+    let html = "";
+
+    for (let i = 0; i < partidos.length; i++) {
+
+        const votos = {};
+
+        votos[partidos[i][0]] = 0;
+        votos[partidos[i][1]] = 0;
+
+        let total = 0;
+
+        snap.forEach(doc => {
+
+            const data = doc.data();
+
+            if (!data.predicciones) return;
+
+            const p = data.predicciones[i];
+
+            if (!p) return;
+
+            if (p.ganador) {
+
+                votos[p.ganador]++;
+
+                total++;
+
+            }
+
+        });
+
+        const e1 = partidos[i][0];
+        const e2 = partidos[i][1];
+
+        const p1 = total === 0 ? 0 :
+            Math.round(votos[e1] / total * 100);
+
+        const p2 = total === 0 ? 0 :
+            Math.round(votos[e2] / total * 100);
+
+        html += `
+
+<div class="partido">
+
+<h2>Partido ${i + 1}</h2>
+
+<p>${e1}: <b>${p1}%</b></p>
+
+<p>${e2}: <b>${p2}%</b></p>
+
+</div>
+
+<br>
+
+`;
+
+    }
+
+    contenedor.innerHTML = html;
+
+}
+
+cargarEstadisticas();
 
 window.guardarBloque = guardarBloque;
 
