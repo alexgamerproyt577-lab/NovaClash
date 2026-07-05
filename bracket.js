@@ -1,26 +1,29 @@
-import {
-    doc,
-    getDoc
-} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
-
 import { db } from "./firebase.js";
+import { equiposBloque1, equiposBloque2 } from "./equipos.js";
 
-async function cargarBracket(){
+const ronda16 = document.getElementById("ronda16");
 
-    const ronda16=document.getElementById("ronda16");
+// Por ahora mostramos el bloque 1
+const partidos = equiposBloque1;
 
-    const torneo=await getDoc(doc(db,"configuracion","torneo"));
+partidos.forEach((partido, i) => {
 
-    if(!torneo.exists()){
+    ronda16.innerHTML += `
 
-        ronda16.innerHTML="No existe el torneo.";
+    <div class="partido">
 
-        return;
+        <h3>Partido ${i + 1}</h3>
 
-    }
+        <p>${partido[0]}</p>
 
-    ronda16.innerHTML="Bracket cargado correctamente.";
+        <p>VS</p>
 
-}
+        <p>${partido[1]}</p>
 
-cargarBracket();
+    </div>
+
+    <br>
+
+    `;
+
+});
