@@ -115,15 +115,11 @@ async function cargarGanadores() {
 
     const snap = await getDocs(collection(db, "resultados"));
 
+    console.log("Cantidad de resultados:", snap.size);
+
     snap.forEach((documento) => {
 
-        const data = documento.data();
-
-        const indice = data.partido - 1;
-
-        if (casillasOctavos[indice]) {
-            casillasOctavos[indice].textContent = data.ganador;
-        }
+        console.log(documento.id, documento.data());
 
     });
 
