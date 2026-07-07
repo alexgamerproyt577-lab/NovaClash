@@ -2,9 +2,9 @@ export const equiposBloque1 = [
 ["Los Squidibi Sigma","Gigachad"],
 ["CPH Brazinos","The gods of war"],
 ["Team Yetis","The Thunders"],
-["Heirs Of J.P","Equipo 8"],
-["Equipo 9","Equipo 10"],
-["Equipo 11","Equipo 12"],
+["Heirs Of J.P","Los Campeones"],
+["Shirin Ryu Gaming","Cat Ezports"],
+["Los Fracasados","Dark Domain"],
 ["Equipo 13","Equipo 14"],
 ["Equipo 15","Equipo 16"]
 ];
