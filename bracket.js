@@ -1,5 +1,12 @@
 import { equiposBloque1 } from "./equipos.js";
 
+import {
+    collection,
+    getDocs
+} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+
+import { db } from "./firebase.js";
+
 const r16 = document.getElementById("r16");
 const r8 = document.getElementById("r8");
 const r4 = document.getElementById("r4");
@@ -32,6 +39,8 @@ equiposBloque1.forEach((partido) => {
 
 for(let i=0;i<4;i++){
 
+   const casillasOctavos = r8.querySelectorAll(".equipo");
+   
     r8.innerHTML += `
 
     <div class="match">
@@ -97,3 +106,27 @@ r1.innerHTML = `
 </div>
 
 `;
+
+/* =========================
+   CARGAR GANADORES A OCTAVOS
+========================= */
+
+async function cargarGanadores() {
+
+    const snap = await getDocs(collection(db, "resultados"));
+
+    snap.forEach((documento) => {
+
+        const data = documento.data();
+
+        const indice = data.partido - 1;
+
+        if (casillasOctavos[indice]) {
+            casillasOctavos[indice].textContent = data.ganador;
+        }
+
+    });
+
+}
+
+cargarGanadores();
