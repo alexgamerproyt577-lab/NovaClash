@@ -5,8 +5,8 @@ export const equiposBloque1 = [
 ["Heirs Of J.P","Los Campeones"],
 ["Shirin Ryu Gaming","Cat Ezports"],
 ["Los Fracasados","Dark Domain"],
-["Equipo 13","Equipo 14"],
-["Equipo 15","Equipo 16"]
+["Tatakae","Jema Chicer"],
+["Community-8","Equipo 16"]
 ];
 
 export const equiposBloque2 = [
