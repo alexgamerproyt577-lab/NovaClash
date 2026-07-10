@@ -79,7 +79,27 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 <h2>Partido ${i + 1}</h2>
 
-<p><b>${partido[0]}</b> VS <b>${partido[1]}</b></p>
+<div class="versus">
+
+<div class="team">
+
+${partido[0]}
+
+</div>
+
+<div class="vs">
+
+⚔️
+
+</div>
+
+<div class="team">
+
+${partido[1]}
+
+</div>
+
+</div>
 
 <label>
 <input type="radio" name="g${i}" value="${partido[0]}">
