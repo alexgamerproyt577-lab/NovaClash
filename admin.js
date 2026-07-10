@@ -1,70 +1,122 @@
 import {
-  doc,
-  setDoc,
-  getDoc,
-  collection,
-  getDocs
+    doc,
+    setDoc,
+    getDoc
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
 
 import { db } from "./firebase.js";
 import { equiposBloque1, equiposBloque2 } from "./equipos.js";
 
-/* =========================
-   CONFIG
-========================= */
-
 let bloqueActivo = 1;
-
-const partidos =
-  bloqueActivo === 1
-    ? equiposBloque1
-    : equiposBloque2;
 
 const contenedor = document.getElementById("adminPartidos");
 
 /* =========================
-   RENDER PARTIDOS
+   CARGAR BLOQUE
 ========================= */
 
-partidos.forEach((p, i) => {
+async function cargarBloque() {
 
-  contenedor.innerHTML += `
-    <div class="partido">
+    const snap = await getDoc(
+        doc(db, "configuracion", "torneo")
+    );
 
-      <h2>Partido ${i + 1}</h2>
+    if (snap.exists()) {
 
-      <label>
-        <input type="radio" name="g${i}" value="${p[0]}">
-        ${p[0]}
-      </label>
+        bloqueActivo = snap.data().bloqueActivo;
 
-      <label>
-        <input type="radio" name="g${i}" value="${p[1]}">
-        ${p[1]}
-      </label>
+        document.getElementById("bloqueActivo").value =
+            bloqueActivo;
 
-      <br><br>
+    }
 
-      <label>
-        <input type="radio" name="r${i}" value="2-0">
-        2-0
-      </label>
+    cargarPartidos();
 
-      <label>
-        <input type="radio" name="r${i}" value="2-1">
-        2-1
-      </label>
+}
 
-    </div>
-    <br>
-  `;
-});
+async function guardarBloque() {
 
-contenedor.innerHTML += `
-  <button onclick="guardarResultados()">
-    Guardar Resultados
-  </button>
+    bloqueActivo = Number(
+        document.getElementById("bloqueActivo").value
+    );
+
+    await setDoc(
+        doc(db, "configuracion", "torneo"),
+        {
+            bloqueActivo
+        }
+    );
+
+    cargarPartidos();
+
+    alert("Bloque actualizado.");
+
+}
+
+window.guardarBloque = guardarBloque;
+
+/* =========================
+   CARGAR PARTIDOS
+========================= */
+
+function cargarPartidos() {
+
+    const partidos =
+        bloqueActivo === 1
+            ? equiposBloque1
+            : equiposBloque2;
+
+    contenedor.innerHTML = "";
+
+    partidos.forEach((p, i) => {
+
+        contenedor.innerHTML += `
+
+<div class="partido">
+
+<h2>Partido ${i + 1}</h2>
+
+<label>
+<input type="radio" name="g${i}" value="${p[0]}">
+${p[0]}
+</label>
+
+<label>
+<input type="radio" name="g${i}" value="${p[1]}">
+${p[1]}
+</label>
+
+<br><br>
+
+<label>
+<input type="radio" name="r${i}" value="2-0">
+2-0
+</label>
+
+<label>
+<input type="radio" name="r${i}" value="2-1">
+2-1
+</label>
+
+</div>
+
+<br>
+
 `;
+
+    });
+
+    contenedor.innerHTML += `
+
+<button onclick="guardarResultados()">
+
+Guardar Resultados
+
+</button>
+
+`;
+
+}
 
 /* =========================
    GUARDAR RESULTADOS
@@ -72,125 +124,75 @@ contenedor.innerHTML += `
 
 async function guardarResultados() {
 
-  for (let i = 0; i < partidos.length; i++) {
+    const partidos =
+        bloqueActivo === 1
+            ? equiposBloque1
+            : equiposBloque2;
 
-    const ganador = document.querySelector(`input[name="g${i}"]:checked`);
-    const resultado = document.querySelector(`input[name="r${i}"]:checked`);
+    for (let i = 0; i < partidos.length; i++) {
 
-    if (!ganador || !resultado) continue;
+        const ganador =
+            document.querySelector(`input[name="g${i}"]:checked`);
 
-    await setDoc(doc(db, "resultados", `partido${i + 1}`), {
-      partido: i + 1,
-      ganador: ganador.value,
-      resultado: resultado.value
-    });
-  }
+        const resultado =
+            document.querySelector(`input[name="r${i}"]:checked`);
 
-  // 🔥 AVANZAR RONDA AUTOMÁTICAMENTE
-  await generarSiguienteRonda();
+        if (!ganador || !resultado) continue;
 
-  alert("✔ Resultados guardados y ronda actualizada");
+        await setDoc(
+            doc(db, "resultados", `partido${i + 1}`),
+            {
+                partido: i + 1,
+                ganador: ganador.value,
+                resultado: resultado.value,
+                bloque: bloqueActivo
+            }
+        );
+
+    }
+
+    alert("Resultados guardados correctamente.");
+
 }
 
 window.guardarResultados = guardarResultados;
 
 /* =========================
-   GENERAR SIGUIENTE RONDA
-========================= */
-
-async function generarSiguienteRonda() {
-
-  const ref = doc(db, "configuracion", "llave");
-  const snap = await getDoc(ref);
-
-  let ronda = snap.exists() ? snap.data().ronda : 1;
-
-  const resultadosSnap = await getDocs(collection(db, "resultados"));
-
-  let partidosOrdenados = [];
-
-  resultadosSnap.forEach(d => {
-    partidosOrdenados.push(d.data());
-  });
-
-  partidosOrdenados.sort((a, b) => a.partido - b.partido);
-
-  let nuevaRonda = [];
-
-  for (let i = 0; i < partidosOrdenados.length; i += 2) {
-
-    const p1 = partidosOrdenados[i];
-    const p2 = partidosOrdenados[i + 1];
-
-    if (!p1 || !p2) continue;
-
-    nuevaRonda.push([
-      p1.ganador,
-      p2.ganador
-    ]);
-  }
-
-  await setDoc(ref, {
-    ronda: ronda + 1,
-    partidos: nuevaRonda
-  });
-}
-
-/* =========================
    ESTADO PREDICCIONES
 ========================= */
 
-async function guardarEstado() {
-
-  const abierto = document.getElementById("estadoPredicciones").checked;
-
-  await setDoc(doc(db, "configuracion", "predicciones"), {
-    abiertas: abierto
-  });
-
-  alert("Estado actualizado.");
-}
-
 async function cargarEstado() {
 
-  const snap = await getDoc(doc(db, "configuracion", "predicciones"));
+    const snap = await getDoc(
+        doc(db, "configuracion", "predicciones")
+    );
 
-  if (snap.exists()) {
-    document.getElementById("estadoPredicciones").checked =
-      snap.data().abiertas;
-  }
+    if (snap.exists()) {
+
+        document.getElementById("estadoPredicciones").checked =
+            snap.data().abiertas;
+
+    }
+
+}
+
+async function guardarEstado() {
+
+    const abiertas =
+        document.getElementById("estadoPredicciones").checked;
+
+    await setDoc(
+        doc(db, "configuracion", "predicciones"),
+        {
+            abiertas
+        }
+    );
+
+    alert("Estado actualizado.");
+
 }
 
 window.guardarEstado = guardarEstado;
-
-/* =========================
-   BLOQUE ACTIVO
-========================= */
-
-async function guardarBloque() {
-
-  const bloque = Number(
-    document.getElementById("bloqueActivo").value
-  );
-
-  await setDoc(doc(db, "configuracion", "torneo"), {
-    bloqueActivo: bloque
-  });
-
-  alert("Bloque actualizado.");
-}
-
-async function cargarBloque() {
-
-  const snap = await getDoc(doc(db, "configuracion", "torneo"));
-
-  if (!snap.exists()) return;
-
-  document.getElementById("bloqueActivo").value =
-    snap.data().bloqueActivo;
-}
-
-window.guardarBloque = guardarBloque;
 
 /* =========================
    INICIO
