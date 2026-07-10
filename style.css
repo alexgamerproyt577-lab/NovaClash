@@ -429,3 +429,157 @@ border-bottom:1px solid #555;
 border:none;
 
 }
+
+/* ===========================
+   PICK'EM CARDS
+=========================== */
+
+.ronda-titulo{
+
+margin:40px 0 30px;
+
+font-size:30px;
+
+color:#c88cff;
+
+text-shadow:0 0 15px #7b2cff;
+
+}
+
+.partido{
+
+background:rgba(255,255,255,.05);
+
+border:2px solid rgba(123,44,255,.45);
+
+border-radius:22px;
+
+padding:25px;
+
+margin:30px auto;
+
+max-width:650px;
+
+backdrop-filter:blur(10px);
+
+box-shadow:
+
+0 0 20px rgba(123,44,255,.25);
+
+transition:.35s;
+
+}
+
+.partido:hover{
+
+transform:translateY(-5px);
+
+border-color:#b14dff;
+
+box-shadow:
+
+0 0 35px rgba(123,44,255,.7);
+
+}
+
+.partido h2{
+
+margin:0 0 20px;
+
+font-size:24px;
+
+color:#ffffff;
+
+letter-spacing:2px;
+
+}
+
+.partido p{
+
+font-size:22px;
+
+font-weight:bold;
+
+margin-bottom:20px;
+
+color:white;
+
+}
+
+.partido label{
+
+display:block;
+
+margin:12px 0;
+
+padding:12px 18px;
+
+border:1px solid rgba(255,255,255,.12);
+
+border-radius:14px;
+
+cursor:pointer;
+
+transition:.25s;
+
+background:rgba(255,255,255,.03);
+
+}
+
+.partido label:hover{
+
+background:rgba(123,44,255,.18);
+
+border-color:#b14dff;
+
+}
+
+.partido input[type="radio"]{
+
+margin-right:12px;
+
+transform:scale(1.2);
+
+accent-color:#9b5cff;
+
+}
+
+#nombre{
+
+width:100%;
+
+max-width:450px;
+
+padding:16px;
+
+border-radius:14px;
+
+border:2px solid rgba(123,44,255,.4);
+
+background:rgba(255,255,255,.05);
+
+color:white;
+
+font-size:18px;
+
+font-family:'Orbitron';
+
+outline:none;
+
+transition:.3s;
+
+}
+
+#nombre:focus{
+
+border-color:#b14dff;
+
+box-shadow:0 0 20px rgba(123,44,255,.5);
+
+}
+
+#nombre::placeholder{
+
+color:#bbbbbb;
+
+}
