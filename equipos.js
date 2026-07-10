@@ -10,7 +10,7 @@ export const equiposBloque1 = [
 ];
 
 export const equiposBloque2 = [
-["Equipo 17","Equipo 18"],
+["Team Cheddar","Equipo 18"],
 ["Equipo 19","Equipo 20"],
 ["Equipo 21","Equipo 22"],
 ["Equipo 23","Equipo 24"],
