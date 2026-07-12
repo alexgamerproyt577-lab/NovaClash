@@ -10,10 +10,10 @@ export const equiposBloque1 = [
 ];
 
 export const equiposBloque2 = [
-["Team Cheddar","Equipo 18"],
-["Equipo 19","Equipo 20"],
-["Equipo 21","Equipo 22"],
-["Equipo 23","Equipo 24"],
+["Team Cheddar","Krew Rabels"],
+["SX","Tilines De Guadalajara"],
+["Ultra Chmicha","Equipo 22"],
+["Equipo 23","The Fenix"],
 ["Equipo 25","Equipo 26"],
 ["Equipo 27","Equipo 28"],
 ["Equipo 29","Equipo 30"],
