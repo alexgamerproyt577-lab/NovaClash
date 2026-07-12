@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Nova Clash | Panel</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+<div class="nav-logo">
+
+NOVA CLASH ADMIN
+
+</div>
+
+</nav>
+
+<div class="contenedor">
+
+<img src="logo.png" class="logo">
+
+<h1>Panel de Administración</h1>
+
+<p class="descripcion">
+
+Controla el torneo desde aquí.
+
+</p>
+
+<hr>
+
+<h2>Estado de las predicciones</h2>
+
+<label>
+
+<input type="checkbox" id="estadoPredicciones">
+
+Predicciones abiertas
+
+</label>
+
+<br><br>
+
+<button onclick="guardarEstado()">
+
+Guardar Estado
+
+</button>
+
+<hr>
+
+<h2>Bloque de partidos</h2>
+
+<select id="bloqueActivo">
+
+<option value="1">
+
+16avos - Bloque 1
+
+</option>
+
+<option value="2">
+
+16avos - Bloque 2
+
+</option>
+
+</select>
+
+<br><br>
+
+<button onclick="guardarBloque()">
+
+Guardar Bloque
+
+</button>
+
+<hr>
+
+<h2>Resultados</h2>
+
+<div id="adminPartidos"></div>
+
+</div>
+
+<script type="module" src="panel.js"></script>
+
+</body>
+
+</html>
