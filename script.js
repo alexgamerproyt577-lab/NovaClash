@@ -47,10 +47,10 @@ async function verificarEstadoPredicciones() {
 function obtenerGruposActivos() {
 
   if (bloqueActivo === 1) {
-    return ["A", "B", "C"];
+    return ["A", "B"];
   }
 
-  return ["D", "E", "F"];
+  return ["C", "D"];
 }
 
 /* =========================
@@ -116,7 +116,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 <div class="grupo-card">
 
   <div class="grupo-header">
-    🅰️ GRUPO ${grupo}
+    GRUPO ${grupo}
   </div>
 
   <div class="grupo-equipos">
@@ -213,6 +213,14 @@ async function enviarPredicciones() {
   }
 }
 
+document.getElementById("nombre").value = "";
+
+document
+.querySelectorAll('input[type="checkbox"]')
+.forEach(c => {
+    c.checked = false;
+    c.disabled = false;
+});
 /* =========================
    FUNCIONES GLOBALES
 ========================= */
