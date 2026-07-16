@@ -1,43 +1,42 @@
 export const grupos = {
-  A: [
-    "Team Yetis",
-    "Black Cat",
-    "CPH Brazinos",
-    "The Thunders"
-  ],
 
-  B: [
-    "The Gods Of War",
-    "Shirin Ryu Gaming",
-    "Heirs Of J.P",
-    "Team Cheddar"
-  ],
+A: [
+"The Thunders",
+"CPH Brazin",
+"Team Yetis",
+"SX",
+"Heirs Of J.P",
+"The Skidibi Sigma"
+],
 
-  C: [
-    "Cat Ezports",
-    "Gigachad",
-    "Los Campeones",
-    "The Squidibi Sigma"
-  ],
+B: [
+"Gigachad",
+"The Gods of War",
+"Los Campeones",
+"Shirin Ryu Gaming",
+"Cat Ezports",
+"Los Fracasados"
+],
 
-  D: [
-    "Jema Chicer",
-    "MJX",
-    "Los Fracasados",
-    "Tatakae"
-  ],
+C: [
+"Dark Domain",
+"Tatakae",
+"MJX",
+"Jema Chicer",
+"Community 8",
+"Black Cat"
+],
 
-  E: [
-    "Community 8",
-    "Krew Rabels",
-    "TPE",
-    "Dark Domain"
-  ],
+D: [
+"Team Cheddar",
+"Kreo Rabels",
+"Tilines de Guadalajara",
+"Ultra Chmicha",
+"TPE",
+"Los Indestructibles"
+]
 
-  F: [
-    "Tilines De Guadalajara",
-    "Los Indestructibles",
-    "Ultra Chmicha",
-    "SX"
-  ]
 };
+
+// Lista automática de grupos
+export const nombresGrupos = Object.keys(grupos);
