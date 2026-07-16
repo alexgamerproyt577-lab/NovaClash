@@ -1,4 +1,4 @@
-console.log("VERSION NUEVA");
+console.log("VERSION GRUPOS V2");
 
 import {
   collection,
@@ -8,16 +8,13 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
 
 import { db } from "./firebase.js";
-import { equiposBloque1, equiposBloque2 } from "./equipos.js";
-
-console.log("SCRIPT CARGADO");
+import { grupos, nombresGrupos } from "./equipos.js";
 
 /* =========================
    VARIABLES
 ========================= */
 
 let bloqueActivo = 1;
-let equipos = [];
 
 /* =========================
    VERIFICAR SI LAS PREDICCIONES ESTÁN ABIERTAS
@@ -41,11 +38,52 @@ async function verificarEstadoPredicciones() {
   }
 
   return true;
-
 }
 
 /* =========================
-   CARGAR PARTIDOS
+   OBTENER GRUPOS DEL BLOQUE ACTIVO
+========================= */
+
+function obtenerGruposActivos() {
+
+  if (bloqueActivo === 1) {
+    return ["A", "B", "C"];
+  }
+
+  return ["D", "E", "F"];
+}
+
+/* =========================
+   CONTROLAR SELECCIÓN DE 3 EQUIPOS
+========================= */
+
+function controlarSeleccion(grupo) {
+
+  const checks = document.querySelectorAll(
+    `input[name="grupo-${grupo}"]`
+  );
+
+  const seleccionados = [...checks].filter(c => c.checked);
+
+  if (seleccionados.length >= 3) {
+
+    checks.forEach(check => {
+      if (!check.checked) {
+        check.disabled = true;
+      }
+    });
+
+  } else {
+
+    checks.forEach(check => {
+      check.disabled = false;
+    });
+
+  }
+}
+
+/* =========================
+   CARGAR GRUPOS
 ========================= */
 
 window.addEventListener("DOMContentLoaded", async () => {
@@ -54,78 +92,54 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   if (!abiertas) return;
 
-  // Leer el bloque activo desde Firebase
+  // Leer bloque activo desde Firebase
   const torneoSnap = await getDoc(
     doc(db, "configuracion", "torneo")
   );
 
   if (torneoSnap.exists()) {
-    bloqueActivo = torneoSnap.data().bloqueActivo;
+    bloqueActivo = torneoSnap.data().bloqueActivo || 1;
   }
 
-  equipos = bloqueActivo === 1
-    ? equiposBloque1
-    : equiposBloque2;
+  const gruposActivos = obtenerGruposActivos();
 
   const contenedor = document.getElementById("partidos");
 
   contenedor.innerHTML = "";
 
-  equipos.forEach((partido, i) => {
+  gruposActivos.forEach(grupo => {
+
+    const equipos = grupos[grupo];
 
     contenedor.innerHTML += `
 
-<div class="partido">
+<div class="grupo-card">
 
-<h2>Partido ${i + 1}</h2>
+  <div class="grupo-header">
+    🅰️ GRUPO ${grupo}
+  </div>
 
-<div class="versus">
+  <div class="grupo-equipos">
 
-<div class="team">
+    ${equipos.map((equipo, i) => `
+      <label class="equipo-option">
+        <input
+          type="checkbox"
+          name="grupo-${grupo}"
+          value="${equipo}"
+          onchange="controlarSeleccion('${grupo}')">
 
-${partido[0]}
+        <span>${equipo}</span>
+      </label>
+    `).join("")}
 
-</div>
+  </div>
 
-<div class="vs">
-
-⚔️
-
-</div>
-
-<div class="team">
-
-${partido[1]}
-
-</div>
-
-</div>
-
-<label>
-<input type="radio" name="g${i}" value="${partido[0]}">
-${partido[0]}
-</label>
-
-<label>
-<input type="radio" name="g${i}" value="${partido[1]}">
-${partido[1]}
-</label>
-
-<br>
-
-<label>
-<input type="radio" name="r${i}" value="2-0">
-2-0
-</label>
-
-<label>
-<input type="radio" name="r${i}" value="2-1">
-2-1
-</label>
+  <div class="grupo-info">
+    Selecciona 3 clasificados
+  </div>
 
 </div>
-
-<br>
 
 `;
 
@@ -146,8 +160,9 @@ async function enviarPredicciones() {
     alert("Escribe tu nombre o Nick");
 
     return;
-
   }
+
+  const gruposActivos = obtenerGruposActivos();
 
   const datos = {
 
@@ -157,35 +172,29 @@ async function enviarPredicciones() {
 
     bloque: bloqueActivo,
 
-    predicciones: []
+    fase: "grupos",
+
+    predicciones: {}
 
   };
 
-  equipos.forEach((partido, i) => {
+  for (const grupo of gruposActivos) {
 
-    const ganador = document.querySelector(
-      `input[name="g${i}"]:checked`
-    );
+    const seleccionados = [
+      ...document.querySelectorAll(
+        `input[name="grupo-${grupo}"]:checked`
+      )
+    ].map(c => c.value);
 
-    const resultado = document.querySelector(
-      `input[name="r${i}"]:checked`
-    );
+    if (seleccionados.length !== 3) {
 
-    datos.predicciones.push({
+      alert(`Debes seleccionar exactamente 3 equipos en el Grupo ${grupo}`);
 
-      partido: i + 1,
+      return;
+    }
 
-      equipo1: partido[0],
-
-      equipo2: partido[1],
-
-      ganador: ganador ? ganador.value : "",
-
-      resultado: resultado ? resultado.value : ""
-
-    });
-
-  });
+    datos.predicciones[grupo] = seleccionados;
+  }
 
   try {
 
@@ -201,11 +210,14 @@ async function enviarPredicciones() {
     console.error(error);
 
     alert("❌ Error al enviar las predicciones.");
-
   }
-
 }
 
-window.enviarPredicciones = enviarPredicciones;
+/* =========================
+   FUNCIONES GLOBALES
+========================= */
 
-console.log("SCRIPT LISTO");
+window.enviarPredicciones = enviarPredicciones;
+window.controlarSeleccion = controlarSeleccion;
+
+console.log("SCRIPT GRUPOS LISTO");
