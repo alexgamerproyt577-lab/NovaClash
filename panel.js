@@ -5,28 +5,39 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
 
 import { db } from "./firebase.js";
-import { equiposBloque1, equiposBloque2 } from "./equipos.js";
+import { partidosGrupos } from "./equipos.js";
 
 let bloqueActivo = 1;
 
 const contenedor = document.getElementById("adminPartidos");
 
-/* =========================
-   CARGAR BLOQUE
-========================= */
+/*=========================================
+    CARGAR ESTADO DEL PANEL
+=========================================*/
 
-async function cargarBloque() {
+async function cargarEstado() {
 
-    const snap = await getDoc(
-        doc(db, "configuracion", "torneo")
+    const pred = await getDoc(
+        doc(db,"configuracion","predicciones")
     );
 
-    if (snap.exists()) {
+    if(pred.exists()){
 
-        bloqueActivo = snap.data().bloqueActivo;
+        document.getElementById("estadoPredicciones").checked =
+        pred.data().abiertas;
+
+    }
+
+    const torneo = await getDoc(
+        doc(db,"configuracion","torneo")
+    );
+
+    if(torneo.exists()){
+
+        bloqueActivo = torneo.data().bloqueActivo || 1;
 
         document.getElementById("bloqueActivo").value =
-            bloqueActivo;
+        bloqueActivo;
 
     }
 
@@ -34,14 +45,40 @@ async function cargarBloque() {
 
 }
 
-async function guardarBloque() {
+/*=========================================
+    GUARDAR ESTADO PREDICCIONES
+=========================================*/
+
+async function guardarEstado(){
+
+    const abiertas =
+    document.getElementById("estadoPredicciones").checked;
+
+    await setDoc(
+        doc(db,"configuracion","predicciones"),
+        {
+            abiertas
+        }
+    );
+
+    alert("Estado actualizado.");
+
+}
+
+window.guardarEstado = guardarEstado;
+
+/*=========================================
+    CAMBIAR BLOQUE
+=========================================*/
+
+async function guardarBloque(){
 
     bloqueActivo = Number(
         document.getElementById("bloqueActivo").value
     );
 
     await setDoc(
-        doc(db, "configuracion", "torneo"),
+        doc(db,"configuracion","torneo"),
         {
             bloqueActivo
         }
@@ -55,47 +92,96 @@ async function guardarBloque() {
 
 window.guardarBloque = guardarBloque;
 
-/* =========================
-   CARGAR PARTIDOS
-========================= */
+/*=========================================
+    OBTENER GRUPOS VISIBLES
+=========================================*/
 
-function cargarPartidos() {
+function gruposActivos(){
 
-    const partidos =
-        bloqueActivo === 1
-            ? equiposBloque1
-            : equiposBloque2;
+    if(bloqueActivo===1){
 
-    contenedor.innerHTML = "";
+        return ["A","B"];
 
-    partidos.forEach((p, i) => {
+    }
+
+    return ["C","D"];
+
+}
+
+/*=========================================
+    CARGAR PARTIDOS
+=========================================*/
+
+function cargarPartidos(){
+
+    contenedor.innerHTML="";
+
+    const grupos = gruposActivos();
+
+    grupos.forEach(grupo=>{
 
         contenedor.innerHTML += `
+        <h2 style="margin-top:40px">
+        🏆 Grupo ${grupo}
+        </h2>
+        `;
+
+        partidosGrupos[grupo].forEach((partido,index)=>{
+
+            const id=`${grupo}-${index}`;
+
+            contenedor.innerHTML += `
 
 <div class="partido">
 
-<h2>Partido ${i + 1}</h2>
+<h3>${partido[0]} 🆚 ${partido[1]}</h3>
 
 <label>
-<input type="radio" name="g${i}" value="${p[0]}">
-${p[0]}
+
+<input
+type="radio"
+name="g-${id}"
+value="${partido[0]}">
+
+${partido[0]}
+
 </label>
 
+<br>
+
 <label>
-<input type="radio" name="g${i}" value="${p[1]}">
-${p[1]}
+
+<input
+type="radio"
+name="g-${id}"
+value="${partido[1]}">
+
+${partido[1]}
+
 </label>
 
 <br><br>
 
 <label>
-<input type="radio" name="r${i}" value="2-0">
+
+<input
+type="radio"
+name="r-${id}"
+value="2-0">
+
 2-0
+
 </label>
 
 <label>
-<input type="radio" name="r${i}" value="2-1">
+
+<input
+type="radio"
+name="r-${id}"
+value="2-1">
+
 2-1
+
 </label>
 
 </div>
@@ -103,6 +189,8 @@ ${p[1]}
 <br>
 
 `;
+
+        });
 
     });
 
