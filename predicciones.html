@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Predicciones - Nova Clash</title>
+<title>Pick'Em | Nova Clash</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -14,60 +15,56 @@
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 
 </head>
+
 <body>
 
 <nav class="navbar">
 
-    <div class="nav-logo">
-        NOVA CLASH
-    </div>
+<div class="nav-logo">
+NOVA CLASH
+</div>
 
-    <div class="nav-links">
+<div class="nav-links">
 
-        <a href="index.html">Inicio</a>
+<a href="index.html">Inicio</a>
 
-        <a href="predicciones.html">Pick'Em</a>
+<a href="predicciones.html">Pick'Em</a>
 
-        <a href="ranking.html">Ranking</a>
+<a href="ranking.html">Ranking</a>
 
-        <a href="reglas.html">Reglas</a>
+<a href="reglas.html">Reglas</a>
 
-    </div>
+</div>
 
 </nav>
 
 <div class="contenedor">
+
+<h1>🏆 PICK'EM</h1>
+
+<p class="descripcion">
+
+Predice qué equipos clasificarán a la siguiente fase y consigue la mayor cantidad de puntos posible.
+
+</p>
+
+<div id="partidos"></div>
+
+<input
+type="text"
+id="nombre"
+placeholder="Escribe tu nombre">
+
+<button onclick="enviarPredicciones()">
+
+ENVIAR PREDICCIONES
+
+</button>
 
 </div>
 
 <script type="module" src="script.js"></script>
 
 </body>
+
 </html>
-
-<div class="contenedor">
-
-<h1>🎯 Pick'Em</h1>
-
-<p class="descripcion">
-Completa tus predicciones para todos los partidos del torneo.
-</p>
-
-<h2 class="ronda-titulo">🏆 FASE DE GRUPOS</h2>
-
-<div id="partidos"></div>
-
-<br>
-
-<input
-type="text"
-id="nombre"
-placeholder="Escribe tu nombre o Nick">
-
-<br><br>
-
-<button onclick="enviarPredicciones()">
-ENVIAR PREDICCIONES
-</button>
-
-</div>
