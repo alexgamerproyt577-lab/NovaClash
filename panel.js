@@ -1,331 +1,254 @@
 import {
-    doc,
-    setDoc,
-    getDoc
+doc,
+setDoc,
+getDoc
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
 
 import { db } from "./firebase.js";
-import { partidosGrupos } from "./equipos.js";
+import { grupos } from "./equipos.js";
 
 let bloqueActivo = 1;
 
 const contenedor = document.getElementById("adminPartidos");
 
-/*=========================================
-    CARGAR ESTADO DEL PANEL
-=========================================*/
+/*==========================
+CARGAR BLOQUE
+==========================*/
 
-async function cargarEstado() {
+async function cargarBloque(){
 
-    const pred = await getDoc(
-        doc(db,"configuracion","predicciones")
-    );
+const snap=await getDoc(
+doc(db,"configuracion","torneo")
+);
 
-    if(pred.exists()){
+if(snap.exists()){
 
-        document.getElementById("estadoPredicciones").checked =
-        pred.data().abiertas;
+bloqueActivo=snap.data().bloqueActivo || 1;
 
-    }
-
-    const torneo = await getDoc(
-        doc(db,"configuracion","torneo")
-    );
-
-    if(torneo.exists()){
-
-        bloqueActivo = torneo.data().bloqueActivo || 1;
-
-        document.getElementById("bloqueActivo").value =
-        bloqueActivo;
-
-    }
-
-    cargarPartidos();
+document.getElementById("bloqueActivo").value=bloqueActivo;
 
 }
 
-/*=========================================
-    GUARDAR ESTADO PREDICCIONES
-=========================================*/
-
-async function guardarEstado(){
-
-    const abiertas =
-    document.getElementById("estadoPredicciones").checked;
-
-    await setDoc(
-        doc(db,"configuracion","predicciones"),
-        {
-            abiertas
-        }
-    );
-
-    alert("Estado actualizado.");
+cargarGrupos();
 
 }
 
-window.guardarEstado = guardarEstado;
+window.guardarBloque=async()=>{
 
-/*=========================================
-    CAMBIAR BLOQUE
-=========================================*/
+bloqueActivo=Number(
+document.getElementById("bloqueActivo").value
+);
 
-async function guardarBloque(){
-
-    bloqueActivo = Number(
-        document.getElementById("bloqueActivo").value
-    );
-
-    await setDoc(
-        doc(db,"configuracion","torneo"),
-        {
-            bloqueActivo
-        }
-    );
-
-    cargarPartidos();
-
-    alert("Bloque actualizado.");
-
+await setDoc(
+doc(db,"configuracion","torneo"),
+{
+bloqueActivo
 }
+);
 
-window.guardarBloque = guardarBloque;
+cargarGrupos();
 
-/*=========================================
-    OBTENER GRUPOS VISIBLES
-=========================================*/
+alert("Bloque actualizado");
 
-function gruposActivos(){
+};
 
-    if(bloqueActivo===1){
+/*==========================
+MOSTRAR GRUPOS
+==========================*/
 
-        return ["A","B"];
+function cargarGrupos(){
 
-    }
+contenedor.innerHTML="";
 
-    return ["C","D"];
+const mostrar=
 
-}
+bloqueActivo===1
+?["A","B"]
+:["C","D"];
 
-/*=========================================
-    CARGAR PARTIDOS
-=========================================*/
+mostrar.forEach(grupo=>{
 
-function cargarPartidos(){
+contenedor.innerHTML+=`
 
-    contenedor.innerHTML="";
+<div class="grupo-card">
 
-    const grupos = gruposActivos();
+<div class="grupo-header">
 
-    grupos.forEach(grupo=>{
+🏆 GRUPO ${grupo}
 
-        contenedor.innerHTML += `
-        <h2 style="margin-top:40px">
-        🏆 Grupo ${grupo}
-        </h2>
-        `;
+</div>
 
-        partidosGrupos[grupo].forEach((partido,index)=>{
+<div class="grupo-equipos">
 
-            const id=`${grupo}-${index}`;
+${grupos[grupo].map(e=>`
 
-            contenedor.innerHTML += `
-
-<div class="partido">
-
-<h3>${partido[0]} 🆚 ${partido[1]}</h3>
-
-<label>
+<label class="equipo-card">
 
 <input
-type="radio"
-name="g-${id}"
-value="${partido[0]}">
+type="checkbox"
+name="grupo-${grupo}"
+value="${e}"
+onchange="controlarSeleccion('${grupo}')">
 
-${partido[0]}
+<div class="equipo-nombre">
+
+${e}
+
+</div>
 
 </label>
 
-<br>
+`).join("")}
 
-<label>
+</div>
 
-<input
-type="radio"
-name="g-${id}"
-value="${partido[1]}">
+<div class="grupo-info">
 
-${partido[1]}
+Seleccionados:
 
-</label>
+<span id="contador-${grupo}">
 
-<br><br>
+0 / 3
 
-<label>
-
-<input
-type="radio"
-name="r-${id}"
-value="2-0">
-
-2-0
-
-</label>
-
-<label>
-
-<input
-type="radio"
-name="r-${id}"
-value="2-1">
-
-2-1
-
-</label>
+</span>
 
 </div>
 
 <br>
 
-`;
+<button onclick="guardarGrupo('${grupo}')">
 
-        });
-
-    });
-
-    contenedor.innerHTML += `
-
-<button onclick="guardarResultados()">
-
-Guardar Resultados
+Guardar Grupo ${grupo}
 
 </button>
 
+</div>
+
 `;
-
-}
-
-/*=========================================
-    GUARDAR RESULTADOS
-=========================================*/
-
-async function guardarResultados(){
-
-    const grupos = gruposActivos();
-
-    for(const grupo of grupos){
-
-        const partidos = partidosGrupos[grupo];
-
-        for(let i=0;i<partidos.length;i++){
-
-            const id=`${grupo}-${i}`;
-
-            const ganador=document.querySelector(
-                `input[name="g-${id}"]:checked`
-            );
-
-            const resultado=document.querySelector(
-                `input[name="r-${id}"]:checked`
-            );
-
-            if(!ganador || !resultado){
-                continue;
-            }
-
-            await setDoc(
-
-                doc(
-                    db,
-                    "resultados",
-                    id
-                ),
-
-                {
-
-                    grupo,
-
-                    partido:i+1,
-
-                    equipo1:partidos[i][0],
-
-                    equipo2:partidos[i][1],
-
-                    ganador:ganador.value,
-
-                    resultado:resultado.value,
-
-                    bloque:bloqueActivo
-
-                }
-
-            );
-
-        }
-
-    }
-
-    alert("✅ Resultados guardados correctamente.");
-
-}
-
-window.guardarResultados = guardarResultados;
-
-
-/*=========================================
-    CARGAR RESULTADOS YA GUARDADOS
-=========================================*/
-
-async function cargarResultadosGuardados(){
-
-    const grupos = gruposActivos();
-
-    for(const grupo of grupos){
-
-        const partidos = partidosGrupos[grupo];
-
-        for(let i=0;i<partidos.length;i++){
-
-            const id=`${grupo}-${i}`;
-
-            const snap=await getDoc(
-                doc(db,"resultados",id)
-            );
-
-            if(!snap.exists()) continue;
-
-            const data=snap.data();
-
-            const g=document.querySelector(
-                `input[name="g-${id}"][value="${data.ganador}"]`
-            );
-
-            if(g) g.checked=true;
-
-            const r=document.querySelector(
-                `input[name="r-${id}"][value="${data.resultado}"]`
-            );
-
-            if(r) r.checked=true;
-
-        }
-
-    }
-
-}
-
-
-/*=========================================
-    INICIO
-=========================================*/
-
-window.addEventListener("DOMContentLoaded",async()=>{
-
-    await cargarEstado();
-
-    await cargarResultadosGuardados();
 
 });
 
-console.log("PANEL ADMIN CARGADO");
+}
+
+/*==========================
+CONTADOR
+==========================*/
+
+window.controlarSeleccion=(grupo)=>{
+
+const checks=document.querySelectorAll(
+`input[name="grupo-${grupo}"]`
+);
+
+const seleccionados=[...checks].filter(c=>c.checked);
+
+document.getElementById(
+`contador-${grupo}`
+).textContent=
+
+`${seleccionados.length} / 3`;
+
+checks.forEach(c=>{
+
+if(seleccionados.length>=3 && !c.checked){
+
+c.disabled=true;
+
+}else{
+
+c.disabled=false;
+
+}
+
+});
+
+};
+
+/*==========================
+GUARDAR CLASIFICADOS
+==========================*/
+
+window.guardarGrupo=async(grupo)=>{
+
+const clasificados=[
+
+...document.querySelectorAll(
+`input[name="grupo-${grupo}"]:checked`
+)
+
+].map(c=>c.value);
+
+if(clasificados.length!==3){
+
+alert("Debes elegir exactamente 3 equipos.");
+
+return;
+
+}
+
+await setDoc(
+
+doc(db,"clasificados",grupo),
+
+{
+
+grupo,
+
+clasificados
+
+}
+
+);
+
+alert(`Grupo ${grupo} guardado correctamente.`);
+
+};
+
+/*==========================
+PREDICCIONES
+==========================*/
+
+async function cargarEstado(){
+
+const snap=await getDoc(
+
+doc(db,"configuracion","predicciones")
+
+);
+
+if(snap.exists()){
+
+document.getElementById(
+"estadoPredicciones"
+).checked=snap.data().abiertas;
+
+}
+
+}
+
+window.guardarEstado=async()=>{
+
+const abiertas=
+
+document.getElementById(
+"estadoPredicciones"
+).checked;
+
+await setDoc(
+
+doc(db,"configuracion","predicciones"),
+
+{
+
+abiertas
+
+}
+
+);
+
+alert("Estado actualizado");
+
+};
+
+cargarEstado();
+cargarBloque();
