@@ -1,26 +1,17 @@
-const usuarioCorrecto = "Leonardo";
-const contraseñaCorrecta = "Nova2026";
+import {
+signInWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
 
-function login(){
+import { auth } from "./firebase.js";
 
-const usuario =
-document.getElementById("usuario").value;
+signInWithEmailAndPassword(auth,email,password)
+.then(()=>{
 
-const contraseña =
-document.getElementById("password").value;
+window.location="panel.html";
 
-if(
-usuario === usuarioCorrecto &&
-contraseña === contraseñaCorrecta
-){
+})
+.catch(()=>{
 
-window.location.href = "panel.html";
+alert("Correo o contraseña incorrectos.");
 
-}else{
-
-document.getElementById("mensaje").innerHTML =
-"❌ Usuario o contraseña incorrectos.";
-
-}
-
-}
+});
