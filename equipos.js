@@ -59,7 +59,6 @@ A: [
 ["Team Yetis","Black Cat"],
 ["CPH Brazinos","The Thunders"],
 ["The Gods Of War","Shirin Ryu Gaming"],
-["The Thunders","Heirs Of J.P"],
 
 ],
 
