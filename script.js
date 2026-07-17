@@ -129,7 +129,9 @@ window.addEventListener("DOMContentLoaded", async () => {
           value="${equipo}"
           onchange="controlarSeleccion('${grupo}')">
 
-        <span>${equipo}</span>
+        <div class="nombre-equipo">
+${equipo}
+</div>
       </label>
     `).join("")}
 
