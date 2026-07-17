@@ -22,9 +22,7 @@
 <nav class="navbar">
 
 <div class="nav-logo">
-
 NOVA CLASH ADMIN
-
 </div>
 
 </nav>
@@ -36,9 +34,7 @@ NOVA CLASH ADMIN
 <h1>Panel de Administración</h1>
 
 <p class="descripcion">
-
 Controla el torneo desde aquí.
-
 </p>
 
 <hr>
@@ -46,37 +42,30 @@ Controla el torneo desde aquí.
 <h2>Estado de las predicciones</h2>
 
 <label>
-
 <input type="checkbox" id="estadoPredicciones">
-
 Predicciones abiertas
-
 </label>
 
 <br><br>
 
 <button onclick="guardarEstado()">
-
 Guardar Estado
-
 </button>
 
 <hr>
 
-<h2>Bloque de partidos</h2>
+<h2>Fase de Grupos</h2>
+
+<p>Selecciona qué grupos estarán visibles en el Pick'Em.</p>
 
 <select id="bloqueActivo">
 
 <option value="1">
-
-16avos - Bloque 1
-
+Bloque 1 (Grupos A y B)
 </option>
 
 <option value="2">
-
-16avos - Bloque 2
-
+Bloque 2 (Grupos C y D)
 </option>
 
 </select>
@@ -84,14 +73,12 @@ Guardar Estado
 <br><br>
 
 <button onclick="guardarBloque()">
-
 Guardar Bloque
-
 </button>
 
 <hr>
 
-<h2>Resultados</h2>
+<h2>Resultados de la Fase de Grupos</h2>
 
 <div id="adminPartidos"></div>
 
