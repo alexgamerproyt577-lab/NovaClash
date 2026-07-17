@@ -660,6 +660,104 @@ transform:scale(1);
 
 text-shadow:0 0 10px #7b2cff;
 
+    /*=============================
+GRUPOS PICK'EM
+=============================*/
+
+.grupo-card{
+
+background:#1a1630;
+
+border:2px solid #7a3cff;
+
+border-radius:18px;
+
+padding:25px;
+
+margin:30px auto;
+
+max-width:700px;
+
+box-shadow:0 0 20px rgba(122,60,255,.25);
+
+}
+
+.grupo-header{
+
+font-size:34px;
+
+font-weight:bold;
+
+text-align:center;
+
+margin-bottom:25px;
+
+color:#b16cff;
+
+}
+
+.grupo-equipos{
+
+display:flex;
+
+flex-direction:column;
+
+gap:14px;
+
+}
+
+.equipo-option{
+
+display:flex;
+
+align-items:center;
+
+gap:15px;
+
+background:#252040;
+
+padding:15px;
+
+border-radius:12px;
+
+cursor:pointer;
+
+transition:.25s;
+
+font-size:22px;
+
+}
+
+.equipo-option:hover{
+
+background:#352d60;
+
+transform:scale(1.02);
+
+}
+
+.equipo-option input{
+
+width:22px;
+
+height:22px;
+
+cursor:pointer;
+
+}
+
+.grupo-info{
+
+margin-top:20px;
+
+text-align:center;
+
+font-size:18px;
+
+color:#bfbfbf;
+
+}
+
 }
 
 }
