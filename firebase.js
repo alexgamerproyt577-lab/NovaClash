@@ -3,6 +3,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebas
 import {
     getFirestore
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+export const auth = getAuth(app);
 
 const firebaseConfig = {
     apiKey: "AIzaSyCULLdWfSlZL2vNetwknkaEOj5fAsIIr6o",
