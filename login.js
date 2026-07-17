@@ -1,17 +1,33 @@
 import {
-signInWithEmailAndPassword
+  signInWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
 
 import { auth } from "./firebase.js";
 
-signInWithEmailAndPassword(auth,email,password)
-.then(()=>{
+window.login = async function () {
 
-window.location="panel.html";
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
 
-})
-.catch(()=>{
+  if (email === "" || password === "") {
 
-alert("Correo o contraseña incorrectos.");
+    alert("Completa todos los campos.");
+    return;
 
-});
+  }
+
+  try {
+
+    await signInWithEmailAndPassword(auth, email, password);
+
+    window.location.href = "panel.html";
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert("Correo o contraseña incorrectos.");
+
+  }
+
+};
