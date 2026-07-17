@@ -758,3 +758,242 @@ font-weight:bold;
 color:white;
 
 }
+
+/* =======================================
+   RESPONSIVE NOVA CLASH
+======================================= */
+
+@media screen and (max-width: 768px){
+
+/* Navbar */
+
+.navbar{
+    flex-direction:column;
+    padding:15px;
+    gap:15px;
+}
+
+.nav-logo{
+    font-size:28px;
+}
+
+.nav-links{
+    width:100%;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:15px;
+}
+
+.nav-links a{
+    font-size:18px;
+}
+
+/* Contenedor */
+
+.contenedor{
+    width:95%;
+    padding:25px 15px;
+}
+
+/* Logo */
+
+.logo{
+    width:220px;
+    max-width:90%;
+}
+
+/* Titulos */
+
+h1{
+    font-size:36px;
+    letter-spacing:2px;
+}
+
+h2{
+    font-size:24px;
+}
+
+.descripcion{
+    font-size:16px;
+    line-height:1.6;
+}
+
+/* Tarjetas */
+
+.grupo-card,
+.partido,
+.card,
+.premio{
+
+    width:100%;
+    max-width:100%;
+
+    margin:20px auto;
+
+    padding:18px;
+
+}
+
+/* Encabezado grupo */
+
+.grupo-header{
+    font-size:26px;
+}
+
+/* Equipos */
+
+.grupo-equipos{
+    gap:10px;
+}
+
+.equipo-option{
+
+    padding:14px;
+
+    font-size:18px;
+
+}
+
+.equipo-option input{
+
+    width:22px;
+    height:22px;
+
+}
+
+/* Inputs */
+
+input[type=text],
+input[type=email],
+input[type=password],
+#nombre{
+
+    width:100%;
+
+    font-size:18px;
+
+    padding:16px;
+
+}
+
+/* Botones */
+
+button{
+
+    width:100%;
+
+    padding:18px;
+
+    font-size:20px;
+
+}
+
+/* Ranking */
+
+.partido h2{
+    font-size:22px;
+}
+
+.partido p{
+    font-size:18px;
+}
+
+/* Versus */
+
+.team{
+    font-size:22px;
+}
+
+.vs{
+    font-size:28px;
+}
+
+/* Bracket */
+
+.bracket{
+
+    flex-direction:column;
+
+    align-items:center;
+
+}
+
+.columna{
+
+    width:100%;
+
+}
+
+.match{
+
+    width:100%;
+
+}
+
+/* Estadísticas */
+
+.estadisticas{
+
+    flex-direction:column;
+
+    align-items:center;
+
+}
+
+.card{
+
+    width:100%;
+
+}
+
+/* Tablas */
+
+table{
+
+    display:block;
+
+    overflow-x:auto;
+
+}
+
+/* Imágenes */
+
+img{
+
+    max-width:100%;
+
+    height:auto;
+
+}
+
+}
+
+/* Celulares pequeños */
+
+@media screen and (max-width:480px){
+
+h1{
+    font-size:30px;
+}
+
+h2{
+    font-size:22px;
+}
+
+.nav-logo{
+    font-size:24px;
+}
+
+.grupo-header{
+    font-size:22px;
+}
+
+.equipo-option{
+    font-size:16px;
+}
+
+button{
+    font-size:18px;
+}
+
+}
