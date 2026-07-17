@@ -56,25 +56,10 @@ export const partidosGrupos = {
 
 A: [
 
-["The Thunders","CPH Brazin"],
-["The Thunders","Team Yetis"],
-["The Thunders","SX"],
+["Team Yetis","Black Cat"],
+["CPH Brazinos","The Thunders"],
+["The Gods Of War","Shirin Ryu Gaming"],
 ["The Thunders","Heirs Of J.P"],
-["The Thunders","The Skidibi Sigma"],
-
-["CPH Brazin","Team Yetis"],
-["CPH Brazin","SX"],
-["CPH Brazin","Heirs Of J.P"],
-["CPH Brazin","The Skidibi Sigma"],
-
-["Team Yetis","SX"],
-["Team Yetis","Heirs Of J.P"],
-["Team Yetis","The Skidibi Sigma"],
-
-["SX","Heirs Of J.P"],
-["SX","The Skidibi Sigma"],
-
-["Heirs Of J.P","The Skidibi Sigma"]
 
 ],
 
