@@ -59,27 +59,28 @@ function obtenerGruposActivos() {
 
 function controlarSeleccion(grupo) {
 
-  const checks = document.querySelectorAll(
-    `input[name="grupo-${grupo}"]`
-  );
+    const checks = document.querySelectorAll(
+        `input[name="grupo-${grupo}"]`
+    );
 
-  const seleccionados = [...checks].filter(c => c.checked);
+    const seleccionados = [...checks].filter(c => c.checked);
 
-  if (seleccionados.length >= 3) {
+    // Actualiza el contador
+    document.getElementById(
+        `contador-${grupo}`
+    ).textContent = `${seleccionados.length} / 3`;
 
+    // Bloquea o desbloquea los demás equipos
     checks.forEach(check => {
-      if (!check.checked) {
-        check.disabled = true;
-      }
+
+        if (seleccionados.length >= 3 && !check.checked) {
+            check.disabled = true;
+        } else {
+            check.disabled = false;
+        }
+
     });
 
-  } else {
-
-    checks.forEach(check => {
-      check.disabled = false;
-    });
-
-  }
 }
 
 /* =========================
