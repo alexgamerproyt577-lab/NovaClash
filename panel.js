@@ -1,4 +1,20 @@
 import {
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+
+import { auth } from "./firebase.js";
+
+onAuthStateChanged(auth,(user)=>{
+
+if(!user){
+
+window.location.href="login.html";
+
+}
+
+});
+
+import {
 doc,
 setDoc,
 getDoc
