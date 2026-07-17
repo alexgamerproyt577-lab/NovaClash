@@ -5,39 +5,39 @@
 export const grupos = {
 
 A: [
-"The Thunders",
-"CPH Brazin",
 "Team Yetis",
-"SX",
-"Heirs Of J.P",
-"The Skidibi Sigma"
+"Black Cat",
+"CPH Brazinos",
+"The Thunders",
+"The Gods Of War",
+"Shirin Ryu Gaming"
 ],
 
 B: [
-"Gigachad",
-"The Gods of War",
-"Los Campeones",
-"Shirin Ryu Gaming",
+"Heirs Of J.P",
+"Team Cheddar",
 "Cat Ezports",
-"Los Fracasados"
+"Gigachad",
+"Los Campeones",
+"The Squidibi Sigma"
 ],
 
 C: [
-"Dark Domain",
-"Tatakae",
-"MJX",
 "Jema Chicer",
-"Community 8",
-"Black Cat"
+"MJX",
+"Los Fracasados",
+"Tatakae",
+"Dark Domain",
+"SX"
 ],
 
 D: [
-"Team Cheddar",
-"Kreo Rabels",
-"Tilines de Guadalajara",
+"Los Indestructibles",
 "Ultra Chmicha",
+"Tilines de Guadalajara",
 "TPE",
-"Los Indestructibles"
+"Community 8",
+"Krew Rabels"
 ]
 
 };
