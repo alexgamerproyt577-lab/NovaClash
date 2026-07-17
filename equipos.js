@@ -65,73 +65,25 @@ A: [
 
 B: [
 
-["Gigachad","The Gods of War"],
-["Gigachad","Los Campeones"],
-["Gigachad","Shirin Ryu Gaming"],
-["Gigachad","Cat Ezports"],
-["Gigachad","Los Fracasados"],
-
-["The Gods of War","Los Campeones"],
-["The Gods of War","Shirin Ryu Gaming"],
-["The Gods of War","Cat Ezports"],
-["The Gods of War","Los Fracasados"],
-
-["Los Campeones","Shirin Ryu Gaming"],
-["Los Campeones","Cat Ezports"],
-["Los Campeones","Los Fracasados"],
-
-["Shirin Ryu Gaming","Cat Ezports"],
-["Shirin Ryu Gaming","Los Fracasados"],
-
-["Cat Ezports","Los Fracasados"]
+["Heirs Of J.P","Team Cheddar"],
+["Cat Ezports","Gigachad"],
+["Los Campeones","The Squidibi Sigma"],
 
 ],
 
 C: [
 
-["Dark Domain","Tatakae"],
-["Dark Domain","MJX"],
-["Dark Domain","Jema Chicer"],
-["Dark Domain","Community 8"],
-["Dark Domain","Black Cat"],
-
-["Tatakae","MJX"],
-["Tatakae","Jema Chicer"],
-["Tatakae","Community 8"],
-["Tatakae","Black Cat"],
-
-["MJX","Jema Chicer"],
-["MJX","Community 8"],
-["MJX","Black Cat"],
-
-["Jema Chicer","Community 8"],
-["Jema Chicer","Black Cat"],
-
-["Community 8","Black Cat"]
+["Jema Chicer","MJX"],
+["Los Fracasados","Tatakae"],
+["Dark Domain","SX"],
 
 ],
 
 D: [
 
-["Team Cheddar","Kreo Rabels"],
-["Team Cheddar","Tilines de Guadalajara"],
-["Team Cheddar","Ultra Chmicha"],
-["Team Cheddar","TPE"],
-["Team Cheddar","Los Indestructibles"],
-
-["Kreo Rabels","Tilines de Guadalajara"],
-["Kreo Rabels","Ultra Chmicha"],
-["Kreo Rabels","TPE"],
-["Kreo Rabels","Los Indestructibles"],
-
-["Tilines de Guadalajara","Ultra Chmicha"],
-["Tilines de Guadalajara","TPE"],
-["Tilines de Guadalajara","Los Indestructibles"],
-
-["Ultra Chmicha","TPE"],
-["Ultra Chmicha","Los Indestructibles"],
-
-["TPE","Los Indestructibles"]
+["Los Indestructibles","Ultra Chmicha"],
+["Tilines De Guadalajara","TPE"],
+["Community 8","Krew Rabels"],
 
 ]
 
