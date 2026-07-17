@@ -5,94 +5,80 @@ import {
 
 import { db } from "./firebase.js";
 
-import {
-  PUNTOS_GANADOR,
-  PUNTOS_RESULTADO
-} from "./config.js";
-
-/* =========================
-   CARGAR RANKING
-========================= */
-
 async function cargarRanking() {
 
   const contenedor = document.getElementById("ranking");
-
-  if (!contenedor) return;
 
   contenedor.innerHTML = "<p>Cargando ranking...</p>";
 
   try {
 
-    // Predicciones de todos los jugadores
+    // Predicciones de los jugadores
     const prediccionesSnap = await getDocs(
       collection(db, "predicciones")
     );
 
-    // Resultados oficiales cargados desde el panel Admin
-    const resultadosSnap = await getDocs(
-      collection(db, "resultados")
+    // Clasificados oficiales
+    const clasificadosSnap = await getDocs(
+      collection(db, "clasificados")
     );
 
-    const resultados = {};
+    // Guardamos los clasificados oficiales
+    const clasificados = {};
 
-    resultadosSnap.forEach(doc => {
+    clasificadosSnap.forEach(doc => {
 
-      const r = doc.data();
+      const data = doc.data();
 
-      resultados[r.partido] = {
-        ganador: r.ganador,
-        resultado: r.resultado
-      };
+      clasificados[data.grupo] = data.clasificados;
 
     });
 
-    const jugadores = {};
+    const jugadores = [];
 
     prediccionesSnap.forEach(doc => {
 
       const data = doc.data();
 
-      // Ignorar documentos viejos o inválidos
       if (!data.nombre || !data.predicciones) return;
 
-      if (!jugadores[data.nombre]) {
-        jugadores[data.nombre] = 0;
-      }
+      let puntos = 0;
 
-      data.predicciones.forEach(p => {
+      for (const grupo in data.predicciones) {
 
-        const real = resultados[p.partido];
+        const prediccion = data.predicciones[grupo];
 
-        // Si todavía no se cargó el resultado de ese partido
-        if (!real) return;
+        const oficial = clasificados[grupo];
 
-        let puntos = 0;
+        if (!oficial) continue;
 
-        // Ganador correcto
-        if (p.ganador === real.ganador) {
+        prediccion.forEach(equipo => {
 
-          puntos += PUNTOS_GANADOR;
+          if (oficial.includes(equipo)) {
 
-          // Marcador correcto
-          if (p.resultado === real.resultado) {
-            puntos += PUNTOS_RESULTADO;
+            puntos++;
+
           }
 
-        }
+        });
 
-        jugadores[data.nombre] += puntos;
+      }
+
+      jugadores.push({
+
+        nombre: data.nombre,
+
+        puntos
 
       });
 
     });
 
-    const ranking = Object.entries(jugadores)
-      .sort((a, b) => b[1] - a[1]);
+    jugadores.sort((a, b) => b.puntos - a.puntos);
 
     contenedor.innerHTML = "";
 
-    if (ranking.length === 0) {
+    if (jugadores.length === 0) {
 
       contenedor.innerHTML =
         "<p>No hay participantes todavía.</p>";
@@ -101,7 +87,7 @@ async function cargarRanking() {
 
     }
 
-    ranking.forEach((jugador, i) => {
+    jugadores.forEach((j, i) => {
 
       let medalla = "";
 
@@ -111,17 +97,17 @@ async function cargarRanking() {
 
       contenedor.innerHTML += `
 
-        <div class="partido">
+<div class="partido">
 
-          <h2>${medalla} #${i + 1} ${jugador[0]}</h2>
+<h2>${medalla} #${i + 1} ${j.nombre}</h2>
 
-          <p>Puntos: <b>${jugador[1]}</b></p>
+<p>${j.puntos} puntos</p>
 
-        </div>
+</div>
 
-        <br>
+<br>
 
-      `;
+`;
 
     });
 
