@@ -696,3 +696,65 @@ font-weight:bold;
 color:white;
 
 }
+
+/*==========================
+TARJETAS SELECCIONABLES
+==========================*/
+
+.equipo-card{
+
+position:relative;
+
+overflow:hidden;
+
+}
+
+.equipo-card input{
+
+display:none;
+
+}
+
+.equipo-card .equipo-nombre{
+
+width:100%;
+
+padding:5px 0;
+
+transition:.25s;
+
+}
+
+.equipo-card:has(input:checked){
+
+background:linear-gradient(90deg,#6b2dff,#9d4dff);
+
+border-color:#c487ff;
+
+box-shadow:
+
+0 0 25px rgba(180,90,255,.6);
+
+transform:scale(1.02);
+
+}
+
+.equipo-card:has(input:checked)::after{
+
+content:"✔";
+
+position:absolute;
+
+right:22px;
+
+top:50%;
+
+transform:translateY(-50%);
+
+font-size:24px;
+
+font-weight:bold;
+
+color:white;
+
+}
