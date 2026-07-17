@@ -121,19 +121,23 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   <div class="grupo-equipos">
 
-    ${equipos.map((equipo, i) => `
-      <label class="equipo-option">
-        <input
-          type="checkbox"
-          name="grupo-${grupo}"
-          value="${equipo}"
-          onchange="controlarSeleccion('${grupo}')">
+    ${equipos.map((equipo) => `
+<label class="equipo-card">
 
-        <div class="nombre-equipo">
-${equipo}
+<input
+type="checkbox"
+name="grupo-${grupo}"
+value="${equipo}"
+onchange="controlarSeleccion('${grupo}')">
+
+<div class="equipo-nombre">
+
+🏆 ${equipo}
+
 </div>
-      </label>
-    `).join("")}
+
+</label>
+`).join("")}
 
   </div>
 
