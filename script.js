@@ -141,9 +141,16 @@ onchange="controlarSeleccion('${grupo}')">
 
   </div>
 
-  <div class="grupo-info">
-    Selecciona 3 clasificados
-  </div>
+<div class="grupo-info">
+
+Clasificados:
+<span id="contador-${grupo}">
+
+0 / 3
+
+</span>
+
+</div>
 
 </div>
 
