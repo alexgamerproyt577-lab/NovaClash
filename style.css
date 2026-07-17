@@ -644,3 +644,55 @@ button:hover{
     0 0 50px rgba(180,90,255,.70);
 
 }
+
+.equipo-card{
+
+display:flex;
+
+align-items:center;
+
+gap:18px;
+
+padding:18px 22px;
+
+background:rgba(255,255,255,.05);
+
+border:2px solid transparent;
+
+border-radius:16px;
+
+cursor:pointer;
+
+transition:.25s;
+
+}
+
+.equipo-card:hover{
+
+background:rgba(123,44,255,.18);
+
+border-color:#9b5cff;
+
+transform:translateX(8px);
+
+}
+
+.equipo-card input{
+
+width:22px;
+
+height:22px;
+
+accent-color:#9b5cff;
+
+}
+
+.equipo-nombre{
+
+font-size:22px;
+
+font-weight:bold;
+
+color:white;
+
+}
