@@ -206,85 +206,126 @@ Guardar Resultados
 
 }
 
-/* =========================
-   GUARDAR RESULTADOS
-========================= */
+/*=========================================
+    GUARDAR RESULTADOS
+=========================================*/
 
-async function guardarResultados() {
+async function guardarResultados(){
 
-    const partidos =
-        bloqueActivo === 1
-            ? equiposBloque1
-            : equiposBloque2;
+    const grupos = gruposActivos();
 
-    for (let i = 0; i < partidos.length; i++) {
+    for(const grupo of grupos){
 
-        const ganador =
-            document.querySelector(`input[name="g${i}"]:checked`);
+        const partidos = partidosGrupos[grupo];
 
-        const resultado =
-            document.querySelector(`input[name="r${i}"]:checked`);
+        for(let i=0;i<partidos.length;i++){
 
-        if (!ganador || !resultado) continue;
+            const id=`${grupo}-${i}`;
 
-        await setDoc(
-            doc(db, "resultados", `partido${i + 1}`),
-            {
-                partido: i + 1,
-                ganador: ganador.value,
-                resultado: resultado.value,
-                bloque: bloqueActivo
+            const ganador=document.querySelector(
+                `input[name="g-${id}"]:checked`
+            );
+
+            const resultado=document.querySelector(
+                `input[name="r-${id}"]:checked`
+            );
+
+            if(!ganador || !resultado){
+                continue;
             }
-        );
+
+            await setDoc(
+
+                doc(
+                    db,
+                    "resultados",
+                    id
+                ),
+
+                {
+
+                    grupo,
+
+                    partido:i+1,
+
+                    equipo1:partidos[i][0],
+
+                    equipo2:partidos[i][1],
+
+                    ganador:ganador.value,
+
+                    resultado:resultado.value,
+
+                    bloque:bloqueActivo
+
+                }
+
+            );
+
+        }
 
     }
 
-    alert("Resultados guardados correctamente.");
+    alert("✅ Resultados guardados correctamente.");
 
 }
 
 window.guardarResultados = guardarResultados;
 
-/* =========================
-   ESTADO PREDICCIONES
-========================= */
 
-async function cargarEstado() {
+/*=========================================
+    CARGAR RESULTADOS YA GUARDADOS
+=========================================*/
 
-    const snap = await getDoc(
-        doc(db, "configuracion", "predicciones")
-    );
+async function cargarResultadosGuardados(){
 
-    if (snap.exists()) {
+    const grupos = gruposActivos();
 
-        document.getElementById("estadoPredicciones").checked =
-            snap.data().abiertas;
+    for(const grupo of grupos){
+
+        const partidos = partidosGrupos[grupo];
+
+        for(let i=0;i<partidos.length;i++){
+
+            const id=`${grupo}-${i}`;
+
+            const snap=await getDoc(
+                doc(db,"resultados",id)
+            );
+
+            if(!snap.exists()) continue;
+
+            const data=snap.data();
+
+            const g=document.querySelector(
+                `input[name="g-${id}"][value="${data.ganador}"]`
+            );
+
+            if(g) g.checked=true;
+
+            const r=document.querySelector(
+                `input[name="r-${id}"][value="${data.resultado}"]`
+            );
+
+            if(r) r.checked=true;
+
+        }
 
     }
 
 }
 
-async function guardarEstado() {
 
-    const abiertas =
-        document.getElementById("estadoPredicciones").checked;
+/*=========================================
+    INICIO
+=========================================*/
 
-    await setDoc(
-        doc(db, "configuracion", "predicciones"),
-        {
-            abiertas
-        }
-    );
+window.addEventListener("DOMContentLoaded",async()=>{
 
-    alert("Estado actualizado.");
+    await cargarEstado();
 
-}
+    await cargarResultadosGuardados();
 
-window.guardarEstado = guardarEstado;
+});
 
-/* =========================
-   INICIO
-========================= */
-
-cargarEstado();
-cargarBloque();
+console.log("PANEL ADMIN CARGADO");
